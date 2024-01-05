@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -28,9 +29,9 @@ public class CategoryRestImpl implements CategoryRest {
     }
 
     @Override
-    public ResponseEntity<String> deleteCategory(Integer categoryId) {
+    public ResponseEntity<String> deleteCategory(List<Integer> categoryIds) {
         try {
-            return categoryService.deleteCategory(categoryId);
+            return categoryService.deleteCategory(categoryIds);
         } catch (Exception ex){
             ex.printStackTrace();
         }

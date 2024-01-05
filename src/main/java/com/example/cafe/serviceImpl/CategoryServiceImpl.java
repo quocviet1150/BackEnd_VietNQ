@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -42,25 +43,24 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public ResponseEntity<String> deleteCategory(Integer categoryId) {
+    public ResponseEntity<String> deleteCategory(List<Integer> categoryIds) {
         try {
             if (jwtFilter.isAdmin()) {
-                Optional<Category> categoryOptional = categoryDao.findById(categoryId);
-
-                if (categoryOptional.isPresent()) {
-                    Category category = categoryOptional.get();
-                    categoryDao.delete(category);
-                    return CafaUtils.getResponseEntity("Category deleted successfully", HttpStatus.OK);
-                } else {
-                    return CafaUtils.getResponseEntity("Category not found", HttpStatus.NOT_FOUND);
+                for (Integer categoryId : categoryIds) {
+                    Optional<Category> categoryOptional = categoryDao.findById(categoryId);
+                    if (categoryOptional.isPresent()) {
+                        Category category = categoryOptional.get();
+                        categoryDao.delete(category);
+                    }
                 }
+                return CafaUtils.getResponseEntity("Categories deleted successfully", HttpStatus.OK);
             } else {
-                return CafaUtils.getResponse(CafeConstants.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
+                return CafaUtils.getResponseEntity(CafeConstants.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
             }
         } catch (Exception ex) {
             ex.printStackTrace();
+            return CafaUtils.getResponseEntity(CafeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return CafaUtils.getResponseEntity(CafeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     private boolean validate(Map<String, String> requestMap, boolean validateId) {
