@@ -2,6 +2,7 @@ package com.example.cafe.service;
 
 import com.example.cafe.wrapper.UserWrapper;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
 import java.util.Map;
@@ -16,7 +17,9 @@ public interface UserService {
 
     ResponseEntity<String> update(Map<String, String> requestMap);
 
+    ResponseEntity<String> checkToken();
 
+    ResponseEntity<String> changePassword(Map<String, String> requestMap);
 
-
+//    ResponseEntity<String> forgotPassword(Map<String, String> requestMap);
 }

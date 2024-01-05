@@ -10,6 +10,7 @@ import com.example.cafe.service.UserService;
 import com.example.cafe.utils.CafaUtils;
 import com.example.cafe.utils.EmailUtils;
 import com.example.cafe.wrapper.UserWrapper;
+import com.google.common.base.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -158,5 +159,43 @@ public class UserServiceImpl implements UserService {
 //            emailUtils.sendSimpleMessage(jwtFilter.getCurrentUser(), "Account Disable", "USER: - " + user
 //                    + " \n is disable by \nADMIN:- " + jwtFilter.getCurrentUser(), allAdmin);
 //        }
+//    }
+
+    @Override
+    public ResponseEntity<String> checkToken() {
+        return CafaUtils.getResponseEntity("true", HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<String> changePassword(Map<String, String> requestMap) {
+        try {
+            User userObj = userDao.findByUserName(jwtFilter.getCurrentUser());
+            if (!userObj.equals(null)) {
+                if (userObj.getPassword().equals(requestMap.get("oldPassword"))) {
+                    userObj.setPassword(requestMap.get("newPassword"));
+                    userDao.save(userObj);
+                    return CafaUtils.getResponseEntity("Password Updated SuccessFully", HttpStatus.OK);
+                }
+                return CafaUtils.getResponseEntity("Incorrect Old password", HttpStatus.BAD_REQUEST);
+            }
+            return CafaUtils.getResponseEntity(CafeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return CafaUtils.getResponseEntity(CafeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+//    @Override
+//    public ResponseEntity<String> forgotPassword(Map<String, String> requestMap) {
+//        try {
+//            User user =userDao.findByUserName(requestMap.get("userName"));
+//            if(!Objects.isNull(user) && !Strings.isNullOrEmpty(user.getUserName())){
+//
+//                return CafaUtils.getResponseEntity("check user for credentials", HttpStatus.OK);
+//            }
+//        } catch (Exception ex) {
+//            ex.printStackTrace();
+//        }
+//        return CafaUtils.getResponseEntity(CafeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
 //    }
 }
