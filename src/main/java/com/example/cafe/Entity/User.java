@@ -1,4 +1,4 @@
-package com.example.cafe.POJO;
+package com.example.cafe.Entity;
 
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;

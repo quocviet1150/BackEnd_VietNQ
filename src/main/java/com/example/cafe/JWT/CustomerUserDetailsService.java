@@ -19,7 +19,7 @@ public class CustomerUserDetailsService implements UserDetailsService {
     @Autowired
     UserDao userDao;
 
-    private com.example.cafe.POJO.User userDetail;
+    private com.example.cafe.Entity.User userDetail;
 
     private static final Logger log = LoggerFactory.getLogger(CustomerUserDetailsService.class);
 
@@ -33,7 +33,7 @@ public class CustomerUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException(("User not found."));
     }
 
-    public com.example.cafe.POJO.User getUserDetail() {
+    public com.example.cafe.Entity.User getUserDetail() {
         return userDetail;
     }
 }
