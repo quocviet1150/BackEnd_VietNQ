@@ -6,8 +6,9 @@ import com.example.cafe.constents.CafeConstants;
 import com.example.cafe.dao.CategoryDao;
 import com.example.cafe.service.CategoryService;
 import com.example.cafe.utils.CafaUtils;
-import com.example.cafe.wrapper.CategoryWrapper;
-import com.example.cafe.wrapper.UserWrapper;
+import com.google.common.base.Strings;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,18 +28,20 @@ public class CategoryServiceImpl implements CategoryService {
     @Autowired
     JwtFilter jwtFilter;
 
+    private static final Logger log = LoggerFactory.getLogger(CategoryServiceImpl.class);
+
     @Override
-    public ResponseEntity<List<CategoryWrapper>> getAllCategory() {
+    public ResponseEntity<List<Category>> getAllCategory(String filterValue) {
         try {
-            if (jwtFilter.isAdmin()) {
-                return new ResponseEntity<>(categoryDao.getAllCategory(), HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>(new ArrayList<>(), HttpStatus.UNAUTHORIZED);
+            if (!Strings.isNullOrEmpty(filterValue) && filterValue.equalsIgnoreCase("true")) {
+                log.info("Inside if");
+                return new ResponseEntity<List<Category>>(categoryDao.getAllCategory(), HttpStatus.OK);
             }
+            return new ResponseEntity<>(categoryDao.findAll(), HttpStatus.OK);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<List<Category>>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @Override
@@ -78,6 +81,30 @@ public class CategoryServiceImpl implements CategoryService {
             ex.printStackTrace();
             return CafaUtils.getResponseEntity(CafeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @Override
+    public ResponseEntity<String> updateCategory(Map<String, String> requestMap) {
+        try {
+            if (jwtFilter.isAdmin()) {
+                if (validate(requestMap, true)) {
+                    Optional optional = categoryDao.findById(Integer.parseInt(requestMap.get("id")));
+                    if (!optional.isEmpty()) {
+                        categoryDao.save(getCategoryFromMap(requestMap, true));
+                        return CafaUtils.getResponseEntity("Categories Updated successfully", HttpStatus.OK);
+                    } else {
+                        return CafaUtils.getResponseEntity("Categories is does not exist", HttpStatus.OK);
+                    }
+                }
+                return CafaUtils.getResponseEntity(CafeConstants.INVALID_DATA, HttpStatus.BAD_REQUEST);
+            } else {
+                return CafaUtils.getResponseEntity(CafeConstants.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
+            }
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return CafaUtils.getResponseEntity(CafeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     private boolean validate(Map<String, String> requestMap, boolean validateId) {

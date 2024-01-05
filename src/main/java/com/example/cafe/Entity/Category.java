@@ -7,8 +7,7 @@ import org.hibernate.annotations.NamedQuery;
 import javax.persistence.*;
 import java.io.Serializable;
 
-//@NamedQuery(name = "Category.getAllCategory", query = "SELECT c FROM Category c")
-@NamedQuery(name = "Category.getAllCategory", query = "SELECT new com.example.cafe.wrapper.CategoryWrapper(c.id, c.name) FROM Category c ")
+@NamedQuery(name = "Category.getAllCategory", query = "SELECT c FROM Category c")
 
 
 @Entity

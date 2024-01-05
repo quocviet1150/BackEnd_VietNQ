@@ -1,11 +1,10 @@
 package com.example.cafe.restImpl;
 
+import com.example.cafe.Entity.Category;
 import com.example.cafe.constents.CafeConstants;
 import com.example.cafe.rest.CategoryRest;
 import com.example.cafe.service.CategoryService;
 import com.example.cafe.utils.CafaUtils;
-import com.example.cafe.wrapper.CategoryWrapper;
-import com.example.cafe.wrapper.UserWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,13 +21,13 @@ public class CategoryRestImpl implements CategoryRest {
     CategoryService categoryService;
 
     @Override
-    public ResponseEntity<List<CategoryWrapper>> getAllCategory() {
+    public ResponseEntity<List<Category>> getAllCategory(String filterValue) {
         try {
-            return categoryService.getAllCategory();
+            return categoryService.getAllCategory(filterValue);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        return new ResponseEntity<List<CategoryWrapper>>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<List<Category>>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @Override
@@ -45,6 +44,16 @@ public class CategoryRestImpl implements CategoryRest {
     public ResponseEntity<String> deleteCategory(List<Integer> categoryIds) {
         try {
             return categoryService.deleteCategory(categoryIds);
+        } catch (Exception ex){
+            ex.printStackTrace();
+        }
+        return CafaUtils.getResponseEntity(CafeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @Override
+    public ResponseEntity<String> updateCategory(Map<String, String> requestMap) {
+        try {
+            return categoryService.updateCategory(requestMap);
         } catch (Exception ex){
             ex.printStackTrace();
         }
