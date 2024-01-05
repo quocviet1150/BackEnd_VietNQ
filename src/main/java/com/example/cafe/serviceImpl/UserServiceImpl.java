@@ -1,5 +1,6 @@
 package com.example.cafe.serviceImpl;
 
+import com.example.cafe.Entity.Category;
 import com.example.cafe.JWT.CustomerUserDetailsService;
 import com.example.cafe.JWT.JwtFilter;
 import com.example.cafe.JWT.JwtUtil;
@@ -141,7 +142,7 @@ public class UserServiceImpl implements UserService {
                     return CafaUtils.getResponseEntity("User is doesn't not exist", HttpStatus.BAD_REQUEST);
                 }
             } else {
-                return CafaUtils.getResponseEntity(CafeConstants.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
+                return CafaUtils.getResponse(CafeConstants.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
             }
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -184,6 +185,7 @@ public class UserServiceImpl implements UserService {
         return CafaUtils.getResponseEntity(CafeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+
 //    @Override
 //    public ResponseEntity<String> forgotPassword(Map<String, String> requestMap) {
 //        try {
@@ -197,4 +199,26 @@ public class UserServiceImpl implements UserService {
 //        }
 //        return CafaUtils.getResponseEntity(CafeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
 //    }
+
+    @Override
+    public ResponseEntity<String> deleteUser(Integer userId) {
+        try {
+            if (jwtFilter.isAdmin()) {
+                Optional<User> userOptional = userDao.findById(userId);
+
+                if (userOptional.isPresent()) {
+                    User user = userOptional.get();
+                    userDao.delete(user);
+                    return CafaUtils.getResponseEntity("User deleted successfully", HttpStatus.OK);
+                } else {
+                    return CafaUtils.getResponseEntity("User not found", HttpStatus.NOT_FOUND);
+                }
+            } else {
+                return CafaUtils.getResponse(CafeConstants.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return CafaUtils.getResponseEntity(CafeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 }

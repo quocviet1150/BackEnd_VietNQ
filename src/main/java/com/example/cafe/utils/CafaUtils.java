@@ -12,4 +12,8 @@ public class CafaUtils {
     public static ResponseEntity<String> getResponseEntity(String responseMessage, HttpStatus httpStatus) {
         return new ResponseEntity<String>("{\"message\":\"" + responseMessage + "\"}", HttpStatus.OK);
     }
+
+    public static ResponseEntity<String> getResponse(String responseMessage, HttpStatus httpStatus) {
+        return new ResponseEntity<String>("{\"message\":\"" + responseMessage + "\"}", HttpStatus.BAD_REQUEST);
+    }
 }
