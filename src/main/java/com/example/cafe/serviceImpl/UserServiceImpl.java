@@ -8,6 +8,7 @@ import com.example.cafe.constents.CafeConstants;
 import com.example.cafe.dao.UserDao;
 import com.example.cafe.service.UserService;
 import com.example.cafe.utils.CafaUtils;
+import com.example.cafe.utils.EmailUtils;
 import com.example.cafe.wrapper.UserWrapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,6 +40,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     JwtFilter jwtFilter;
 
+    @Autowired
+    EmailUtils emailUtils;
+
     private static final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
 
     @Override
@@ -48,12 +52,12 @@ public class UserServiceImpl implements UserService {
 
             if (validateSignUp(requestMap)) {
 
-                User user = userDao.findByEmailId(requestMap.get("email"));
+                User user = userDao.findByUserNameId(requestMap.get("userName"));
                 if (Objects.isNull(user)) {
                     userDao.save(getUserFromMap(requestMap));
                     return CafaUtils.getResponseEntity("save data.", HttpStatus.OK);
                 } else {
-                    return CafaUtils.getResponseEntity("email already exits.", HttpStatus.BAD_REQUEST);
+                    return CafaUtils.getResponseEntity("UserName already exits.", HttpStatus.BAD_REQUEST);
                 }
 
             } else {
@@ -68,7 +72,7 @@ public class UserServiceImpl implements UserService {
 
     private boolean validateSignUp(Map<String, String> requestMap) {
         if (requestMap.containsKey("name") && requestMap.containsKey("contactNumber") &&
-                requestMap.containsKey("email") && requestMap.containsKey("password")) {
+                requestMap.containsKey("userName") && requestMap.containsKey("password")) {
             return true;
         }
         return false;
@@ -78,7 +82,7 @@ public class UserServiceImpl implements UserService {
         User user = new User();
         user.setName(requestMap.get("name"));
         user.setContactNumber(requestMap.get("contactNumber"));
-        user.setEmail(requestMap.get("email"));
+        user.setUserName(requestMap.get("userName"));
         user.setPassword(requestMap.get("password"));
         user.setStatus("false");
         user.setRole("user");
@@ -90,12 +94,12 @@ public class UserServiceImpl implements UserService {
         log.info("inside login");
         try {
             Authentication auth = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(requestMap.get("email"), requestMap.get("password"))
+                    new UsernamePasswordAuthenticationToken(requestMap.get("userName"), requestMap.get("password"))
             );
             if (auth.isAuthenticated()) {
                 if (customerUserDetailsService.getUserDetail().getStatus().equalsIgnoreCase("true")) {
                     return new ResponseEntity<String>("{\"token\":\"" +
-                            jwtUtil.generateToken(customerUserDetailsService.getUserDetail().getEmail(),
+                            jwtUtil.generateToken(customerUserDetailsService.getUserDetail().getUserName(),
                                     customerUserDetailsService.getUserDetail().getRole()) + "\"}",
                             HttpStatus.OK);
                 }
@@ -131,6 +135,7 @@ public class UserServiceImpl implements UserService {
                 Optional<User> optional = userDao.findById(Integer.parseInt(requestMap.get("id")));
                 if (!optional.isEmpty()) {
                     userDao.updateStatus(requestMap.get("status"), Integer.parseInt(requestMap.get("id")));
+//                    sendMailToAllAdmin(requestMap.get("status"), optional.get().getEmail(), userDao.getAllAdmin());
                     return CafaUtils.getResponseEntity("User status update successfully", HttpStatus.OK);
                 } else {
                     return CafaUtils.getResponseEntity("User is doesn't not exist", HttpStatus.BAD_REQUEST);
@@ -143,4 +148,15 @@ public class UserServiceImpl implements UserService {
         }
         return CafaUtils.getResponseEntity(CafeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+//    private void sendMailToAllAdmin(String status, String user, List<String> allAdmin) {
+//        allAdmin.remove(jwtFilter.getCurrentUser());
+//        if (status != null && status.equalsIgnoreCase("true")) {
+//            emailUtils.sendSimpleMessage(jwtFilter.getCurrentUser(), "Account Approved", "USER: - " + user
+//                    + " \n is approved by \nADMIN:- " + jwtFilter.getCurrentUser(), allAdmin);
+//        } else {
+//            emailUtils.sendSimpleMessage(jwtFilter.getCurrentUser(), "Account Disable", "USER: - " + user
+//                    + " \n is disable by \nADMIN:- " + jwtFilter.getCurrentUser(), allAdmin);
+//        }
+//    }
 }

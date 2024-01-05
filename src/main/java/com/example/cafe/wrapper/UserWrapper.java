@@ -4,7 +4,7 @@ package com.example.cafe.wrapper;
 public class UserWrapper {
     private Integer id;
     private String name;
-    private String email;
+    private String userName;
     private String contactNumber;
     private String status;
 
@@ -12,10 +12,10 @@ public class UserWrapper {
 
     }
 
-    public UserWrapper(Integer id, String name, String email, String contactNumber, String status) {
+    public UserWrapper(Integer id, String name, String userName, String contactNumber, String status) {
         this.id = id;
         this.name = name;
-        this.email = email;
+        this.userName = userName;
         this.contactNumber = contactNumber;
         this.status = status;
     }
@@ -36,12 +36,12 @@ public class UserWrapper {
         this.name = name;
     }
 
-    public String getEmail() {
-        return email;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getContactNumber() {

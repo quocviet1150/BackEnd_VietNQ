@@ -7,9 +7,11 @@ import org.hibernate.annotations.NamedQuery;
 import javax.persistence.*;
 import java.io.Serializable;
 
-@NamedQuery(name = "User.findByEmailId", query = "select u from User u where u.email=:email")
+@NamedQuery(name = "User.findByUserNameId", query = "select u from User u where u.userName=:userName")
 
-@NamedQuery(name = "User.getAllUser", query = "SELECT new com.example.cafe.wrapper.UserWrapper(u.id, u.name, u.email, u.contactNumber, u.status) FROM User u WHERE u.role = 'user'")
+@NamedQuery(name = "User.getAllUser", query = "SELECT new com.example.cafe.wrapper.UserWrapper(u.id, u.name, u.userName, u.contactNumber, u.status) FROM User u WHERE u.role = 'user'")
+
+@NamedQuery(name = "User.getAllAdmin", query = "SELECT u.userName FROM User u WHERE u.role = 'admin'")
 
 @NamedQuery(name = "User.updateStatus", query = "update User u set u.status=:status where u.id=:id")
 
@@ -32,8 +34,8 @@ public class User implements Serializable {
     @Column(name = "contactNumber")
     private String contactNumber;
 
-    @Column(name = "email")
-    private String email;
+    @Column(name = "userName")
+    private String userName;
 
     @Column(name = "password")
     private String password;
@@ -72,12 +74,12 @@ public class User implements Serializable {
         this.contactNumber = contactNumber;
     }
 
-    public String getEmail() {
-        return email;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getPassword() {
