@@ -6,11 +6,14 @@ import com.example.cafe.constents.CafeConstants;
 import com.example.cafe.dao.CategoryDao;
 import com.example.cafe.service.CategoryService;
 import com.example.cafe.utils.CafaUtils;
+import com.example.cafe.wrapper.CategoryWrapper;
+import com.example.cafe.wrapper.UserWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -23,6 +26,20 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Autowired
     JwtFilter jwtFilter;
+
+    @Override
+    public ResponseEntity<List<CategoryWrapper>> getAllCategory() {
+        try {
+            if (jwtFilter.isAdmin()) {
+                return new ResponseEntity<>(categoryDao.getAllCategory(), HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(new ArrayList<>(), HttpStatus.UNAUTHORIZED);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 
     @Override
     public ResponseEntity<String> createCategory(Map<String, String> requestMap) {

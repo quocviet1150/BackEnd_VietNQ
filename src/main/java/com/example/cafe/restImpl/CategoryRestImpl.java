@@ -4,11 +4,14 @@ import com.example.cafe.constents.CafeConstants;
 import com.example.cafe.rest.CategoryRest;
 import com.example.cafe.service.CategoryService;
 import com.example.cafe.utils.CafaUtils;
+import com.example.cafe.wrapper.CategoryWrapper;
+import com.example.cafe.wrapper.UserWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -17,6 +20,16 @@ public class CategoryRestImpl implements CategoryRest {
 
     @Autowired
     CategoryService categoryService;
+
+    @Override
+    public ResponseEntity<List<CategoryWrapper>> getAllCategory() {
+        try {
+            return categoryService.getAllCategory();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return new ResponseEntity<List<CategoryWrapper>>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 
     @Override
     public ResponseEntity<String> createCategory(Map<String, String> requestMap) {
