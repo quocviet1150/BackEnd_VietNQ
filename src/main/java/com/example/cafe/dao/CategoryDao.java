@@ -9,6 +9,6 @@ public interface CategoryDao extends JpaRepository<Category, Integer> {
 
     List<Category> getAllCategory();
 
-    List<Integer> deleteCategory();
+//    List<Integer> deleteCategory();
 
 }

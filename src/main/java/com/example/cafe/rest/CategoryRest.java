@@ -16,8 +16,8 @@ public interface CategoryRest {
     @PostMapping(path = "/create_category")
     ResponseEntity<String> createCategory(@RequestBody(required = true) Map<String, String> requestMap);
 
-    @DeleteMapping(path = "/delete_category/{categoryIds}")
-    ResponseEntity<String> deleteCategory(@PathVariable List<Integer> categoryIds);
+//    @DeleteMapping(path = "/delete_category/{categoryIds}")
+//    ResponseEntity<String> deleteCategory(@PathVariable List<Integer> categoryIds);
 
     @PostMapping(path = "/update_category")
     ResponseEntity<String> updateCategory(@RequestBody(required = true) Map<String, String> requestMap);

@@ -62,27 +62,27 @@ public class CategoryServiceImpl implements CategoryService {
         return CafaUtils.getResponseEntity(CafeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @Override
-    public ResponseEntity<String> deleteCategory(List<Integer> categoryIds) {
-        try {
-            if (jwtFilter.isAdmin()) {
-                for (Integer categoryId : categoryIds) {
-                    Optional<Category> categoryOptional = categoryDao.findById(categoryId);
-                    if (categoryOptional.isPresent()) {
-                        Category category = categoryOptional.get();
-
-                        categoryDao.delete(category);
-                    }
-                }
-                return CafaUtils.getResponseEntity("Categories deleted successfully", HttpStatus.OK);
-            } else {
-                return CafaUtils.getResponseEntity(CafeConstants.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return CafaUtils.getResponseEntity(CafeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
+//    @Override
+//    public ResponseEntity<String> deleteCategory(List<Integer> categoryIds) {
+//        try {
+//            if (jwtFilter.isAdmin()) {
+//                for (Integer categoryId : categoryIds) {
+//                    Optional<Category> categoryOptional = categoryDao.findById(categoryId);
+//                    if (categoryOptional.isPresent()) {
+//                        Category category = categoryOptional.get();
+//
+//                        categoryDao.delete(category);
+//                    }
+//                }
+//                return CafaUtils.getResponseEntity("Categories deleted successfully", HttpStatus.OK);
+//            } else {
+//                return CafaUtils.getResponseEntity(CafeConstants.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
+//            }
+//        } catch (Exception ex) {
+//            ex.printStackTrace();
+//            return CafaUtils.getResponseEntity(CafeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+//    }
 
     @Override
     public ResponseEntity<String> updateCategory(Map<String, String> requestMap) {

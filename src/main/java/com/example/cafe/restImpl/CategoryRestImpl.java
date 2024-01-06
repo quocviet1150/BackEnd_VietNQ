@@ -40,15 +40,15 @@ public class CategoryRestImpl implements CategoryRest {
         return CafaUtils.getResponseEntity(CafeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @Override
-    public ResponseEntity<String> deleteCategory(List<Integer> categoryIds) {
-        try {
-            return categoryService.deleteCategory(categoryIds);
-        } catch (Exception ex){
-            ex.printStackTrace();
-        }
-        return CafaUtils.getResponseEntity(CafeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+//    @Override
+//    public ResponseEntity<String> deleteCategory(List<Integer> categoryIds) {
+//        try {
+//            return categoryService.deleteCategory(categoryIds);
+//        } catch (Exception ex){
+//            ex.printStackTrace();
+//        }
+//        return CafaUtils.getResponseEntity(CafeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+//    }
 
     @Override
     public ResponseEntity<String> updateCategory(Map<String, String> requestMap) {
