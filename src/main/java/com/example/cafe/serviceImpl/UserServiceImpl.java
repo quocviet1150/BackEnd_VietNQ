@@ -142,7 +142,7 @@ public class UserServiceImpl implements UserService {
                     return CafaUtils.getResponseEntity("User is doesn't not exist", HttpStatus.BAD_REQUEST);
                 }
             } else {
-                return CafaUtils.getResponse(CafeConstants.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
+                return CafaUtils.getResponseEntity(CafeConstants.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
             }
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -214,7 +214,7 @@ public class UserServiceImpl implements UserService {
                     return CafaUtils.getResponseEntity("User not found", HttpStatus.NOT_FOUND);
                 }
             } else {
-                return CafaUtils.getResponse(CafeConstants.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
+                return CafaUtils.getResponseEntity(CafeConstants.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
             }
         } catch (Exception ex) {
             ex.printStackTrace();

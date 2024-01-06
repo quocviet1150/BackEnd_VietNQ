@@ -53,7 +53,7 @@ public class CategoryServiceImpl implements CategoryService {
                     return CafaUtils.getResponseEntity("Category create Succesfully", HttpStatus.OK);
                 }
             } else {
-                return CafaUtils.getResponse(CafeConstants.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
+                return CafaUtils.getResponseEntity(CafeConstants.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
             }
 
         } catch (Exception ex) {
@@ -70,6 +70,7 @@ public class CategoryServiceImpl implements CategoryService {
                     Optional<Category> categoryOptional = categoryDao.findById(categoryId);
                     if (categoryOptional.isPresent()) {
                         Category category = categoryOptional.get();
+
                         categoryDao.delete(category);
                     }
                 }
@@ -100,7 +101,6 @@ public class CategoryServiceImpl implements CategoryService {
             } else {
                 return CafaUtils.getResponseEntity(CafeConstants.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
             }
-
         } catch (Exception ex) {
             ex.printStackTrace();
         }
