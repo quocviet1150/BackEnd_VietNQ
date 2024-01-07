@@ -19,6 +19,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.FileOutputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
@@ -43,14 +45,14 @@ public class BillServiceImpl implements BillService {
                     Object isGenerateValue = requestMap.get("isGenerate");
 
                     if (isGenerateValue instanceof Boolean && !(Boolean) isGenerateValue) {
-                        fileName = (String) requestMap.get("uuid");
-                    } else {
-                        fileName = CafaUtils.getUUID();
-                        requestMap.put("uuid", fileName);
-                        insertBill(requestMap);
+                        fileName = requestMap.get("uuid");
                     }
+                } else {
+                    fileName = CafaUtils.getUUID();
+                    requestMap.put("uuid", fileName);
+                    insertBill(requestMap);
                 }
-                String data = "Name: " + requestMap.get("name") + "\n" + "ContactNumber: " + requestMap.get("contactNumber")
+                String data = "Name: " + requestMap.get("name") + "Email: " + requestMap.get("email") + "\n" + "ContactNumber: " + requestMap.get("contactNumber")
                         + "\n" + "PaymentMethod: " + requestMap.get("paymentMethod");
                 Document document = new Document();
                 PdfWriter.getInstance(document, new FileOutputStream(CafeConstants.STORE_LOCATION + "\\" + fileName + ".pdf"));
@@ -69,13 +71,13 @@ public class BillServiceImpl implements BillService {
                 table.setWidthPercentage(100);
                 createTableHeader(table);
 
-                JSONArray jsonArray = CafaUtils.getJsonArrayFromString((String) requestMap.get("productDetails"));
+                JSONArray jsonArray = CafaUtils.getJsonArrayFromString(requestMap.get("productDetails"));
                 for (int i = 0; i < jsonArray.length(); i++) {
                     createRow(table, CafaUtils.getMapFromJson(jsonArray.getString(i)));
                 }
                 document.add(table);
 
-                Paragraph footer = new Paragraph("Total: " + requestMap.get("total") +
+                Paragraph footer = new Paragraph("Total: " + requestMap.get("totalAmount") +
                         "Thank you for visiting. Please visit again!!", getFont("Data"));
                 document.add(footer);
                 return new ResponseEntity<>("{\"uuid\" :\"" + fileName + "\"}", HttpStatus.OK);
@@ -99,22 +101,29 @@ public class BillServiceImpl implements BillService {
     private boolean validate(Map<String, String> requestMap) {
         return requestMap.containsKey("name") &&
                 requestMap.containsKey("contactNumber") &&
+                requestMap.containsKey("email") &&
                 requestMap.containsKey("paymentMethod") &&
                 requestMap.containsKey("productDetails") &&
-                requestMap.containsKey("total");
+                requestMap.containsKey("totalAmount");
 
     }
 
     private void insertBill(Map<String, String> requestMap) {
         try {
             Bill bill = new Bill();
-            bill.setUuid((String) requestMap.get("uuid"));
-            bill.setName((String) requestMap.get("name"));
-            bill.setContactNumber((String) requestMap.get("contactNumber"));
-            bill.setPaymentMethod((String) requestMap.get("paymentMethod"));
-            bill.setTotal(Integer.parseInt((String) requestMap.get("total")));
-            bill.setProductDetail((String) requestMap.get("productDetails"));
+            bill.setUuid(requestMap.get("uuid"));
+            bill.setName(requestMap.get("name"));
+            bill.setEmail(requestMap.get("email"));
+            bill.setContactNumber(requestMap.get("contactNumber"));
+            bill.setPaymentMethod(requestMap.get("paymentMethod"));
+
+            if (requestMap.containsKey("totalAmount")) {
+                bill.setTotal(Integer.parseInt(requestMap.get("totalAmount")));
+            }
+
+            bill.setProductDetail(requestMap.get("productDetails"));
             bill.setCreatedBy(jwtFilter.getCurrentUser());
+
             billDao.save(bill);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -162,5 +171,16 @@ public class BillServiceImpl implements BillService {
                     header.setVerticalAlignment(Element.ALIGN_CENTER);
                     table.addCell(header);
                 });
+    }
+
+    @Override
+    public ResponseEntity<List<Bill>> getBills() {
+        List<Bill> list = new ArrayList<>();
+        if (jwtFilter.isAdmin()) {
+            list = billDao.getAllBills();
+        } else {
+            list = billDao.getBillByUserName(jwtFilter.getCurrentUser());
+        }
+        return new ResponseEntity<>(list, HttpStatus.OK);
     }
 }

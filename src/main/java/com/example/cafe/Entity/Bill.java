@@ -2,9 +2,13 @@ package com.example.cafe.Entity;
 
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.NamedQuery;
 
 import javax.persistence.*;
 import java.io.Serializable;
+
+@NamedQuery(name = "Bill.getAllBills",query = "select b from Bill b order by b.id desc ")
+@NamedQuery(name = "Bill.getBillByUserName",query = "select b from Bill b where b.createdBy=:username order by b.id desc ")
 
 @Entity
 @DynamicUpdate
@@ -22,6 +26,9 @@ public class Bill implements Serializable {
 
     @Column(name = "uuid")
     private String uuid;
+
+    @Column(name = "email")
+    private String email;
 
     @Column(name = "contactNumber")
     private String contactNumber;
@@ -42,10 +49,11 @@ public class Bill implements Serializable {
 
     }
 
-    public Bill(Integer id, String name, String uuid, String contactNumber, String paymentMethod, Integer total, String productDetail, String createdBy) {
+    public Bill(Integer id, String name, String uuid, String email, String contactNumber, String paymentMethod, Integer total, String productDetail, String createdBy) {
         this.id = id;
         this.name = name;
         this.uuid = uuid;
+        this.email = email;
         this.contactNumber = contactNumber;
         this.paymentMethod = paymentMethod;
         this.total = total;
@@ -72,6 +80,14 @@ public class Bill implements Serializable {
 
     public String getProductDetail() {
         return productDetail;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public void setProductDetail(String productDetail) {
