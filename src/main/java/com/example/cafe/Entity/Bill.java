@@ -17,6 +17,9 @@ public class Bill implements Serializable {
     @Column(name = "id")
     private Integer id;
 
+    @Column(name = "name")
+    private String name;
+
     @Column(name = "uuid")
     private String uuid;
 
@@ -29,16 +32,25 @@ public class Bill implements Serializable {
     @Column(name = "total")
     private Integer total;
 
+    @Column(name = "productDetails", columnDefinition = "json")
+    private String productDetail;
+
+    @Column(name = "createdby")
+    private String createdBy;
+
     public Bill() {
 
     }
 
-    public Bill(Integer id, String uuid, String contactNumber, String paymentMethod, Integer total) {
+    public Bill(Integer id, String name, String uuid, String contactNumber, String paymentMethod, Integer total, String productDetail, String createdBy) {
         this.id = id;
+        this.name = name;
         this.uuid = uuid;
         this.contactNumber = contactNumber;
         this.paymentMethod = paymentMethod;
         this.total = total;
+        this.productDetail = productDetail;
+        this.createdBy = createdBy;
     }
 
     public Integer getId() {
@@ -47,6 +59,31 @@ public class Bill implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getProductDetail() {
+        return productDetail;
+    }
+
+    public void setProductDetail(String productDetail) {
+        this.productDetail = productDetail;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
     }
 
     public String getUuid() {
