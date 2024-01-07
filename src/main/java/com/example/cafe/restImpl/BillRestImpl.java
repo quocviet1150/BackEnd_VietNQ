@@ -20,7 +20,7 @@ public class BillRestImpl implements BillRest {
     BillService billService;
 
     @Override
-    public ResponseEntity<String> generateReport(Map<String, String> requestMap) {
+    public ResponseEntity<String> generateReport(Map<String, Object> requestMap) {
         try {
             return billService.generateReport(requestMap);
         } catch (Exception ex) {
@@ -37,5 +37,25 @@ public class BillRestImpl implements BillRest {
             ex.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public ResponseEntity<byte[]> getPDF(Map<String, Object> requestMap) {
+        try {
+            return  billService.getPDF(requestMap);
+        } catch (Exception ex){
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public ResponseEntity<String> deleteBill(Integer id) {
+        try {
+            return billService.deleteBill(id);
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+        return CafaUtils.getResponseEntity(CafeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

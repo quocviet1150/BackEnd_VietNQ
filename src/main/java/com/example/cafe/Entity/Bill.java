@@ -1,14 +1,16 @@
 package com.example.cafe.Entity;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.NamedQuery;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
-@NamedQuery(name = "Bill.getAllBills",query = "select b from Bill b order by b.id desc ")
-@NamedQuery(name = "Bill.getBillByUserName",query = "select b from Bill b where b.createdBy=:username order by b.id desc ")
+@NamedQuery(name = "Bill.getAllBills", query = "select b from Bill b order by b.id desc ")
+@NamedQuery(name = "Bill.getBillByUserName", query = "select b from Bill b where b.createdBy=:username order by b.id desc ")
 
 @Entity
 @DynamicUpdate
@@ -40,7 +42,7 @@ public class Bill implements Serializable {
     private Integer total;
 
     @Column(name = "productDetails", columnDefinition = "json")
-    private String productDetail;
+    private String productDetails;
 
     @Column(name = "createdby")
     private String createdBy;
@@ -49,7 +51,7 @@ public class Bill implements Serializable {
 
     }
 
-    public Bill(Integer id, String name, String uuid, String email, String contactNumber, String paymentMethod, Integer total, String productDetail, String createdBy) {
+    public Bill(Integer id, String name, String uuid, String email, String contactNumber, String paymentMethod, Integer total, String productDetails, String createdBy) {
         this.id = id;
         this.name = name;
         this.uuid = uuid;
@@ -57,7 +59,7 @@ public class Bill implements Serializable {
         this.contactNumber = contactNumber;
         this.paymentMethod = paymentMethod;
         this.total = total;
-        this.productDetail = productDetail;
+        this.productDetails = productDetails;
         this.createdBy = createdBy;
     }
 
@@ -78,9 +80,6 @@ public class Bill implements Serializable {
         this.name = name;
     }
 
-    public String getProductDetail() {
-        return productDetail;
-    }
 
     public String getEmail() {
         return email;
@@ -88,10 +87,6 @@ public class Bill implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public void setProductDetail(String productDetail) {
-        this.productDetail = productDetail;
     }
 
     public String getCreatedBy() {
@@ -132,5 +127,13 @@ public class Bill implements Serializable {
 
     public void setTotal(Integer total) {
         this.total = total;
+    }
+
+    public String getProductDetails() {
+        return productDetails;
+    }
+
+    public void setProductDetails(String productDetails) {
+        this.productDetails = productDetails;
     }
 }

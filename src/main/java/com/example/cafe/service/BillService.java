@@ -8,7 +8,11 @@ import java.util.Map;
 
 public interface BillService {
 
-    ResponseEntity<String> generateReport(Map<String, String> requestMap);
+    ResponseEntity<String> generateReport(Map<String, Object> requestMap);
 
     ResponseEntity<List<Bill>> getBills();
+
+    ResponseEntity<byte[]> getPDF(Map<String, Object> requestMap);
+
+    ResponseEntity<String> deleteBill(Integer id);
 }

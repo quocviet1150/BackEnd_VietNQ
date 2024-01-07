@@ -1,18 +1,24 @@
 package com.example.cafe.utils;
 
+import com.example.cafe.serviceImpl.CategoryServiceImpl;
 import com.google.common.base.Strings;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.io.File;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 public class CafaUtils {
+
+    private static final Logger log = LoggerFactory.getLogger(CafaUtils.class);
 
     private CafaUtils() {
 
@@ -38,6 +44,17 @@ public class CafaUtils {
             return new Gson().fromJson(data, new TypeToken<Map<String, Object>>() {
             }.getType());
         return new HashMap<>();
+    }
+
+    public static Boolean isFileExist(String path) {
+        log.info("Inside isFileExist {}", path);
+        try {
+            File file = new File(path);
+            return (file != null && file.exists()) ? Boolean.TRUE : Boolean.FALSE;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return false;
     }
 
 }

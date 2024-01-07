@@ -10,7 +10,9 @@ import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import org.apache.pdfbox.io.IOUtils;
 import org.json.JSONArray;
+import org.mockito.internal.util.io.IOUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +20,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.io.FileOutputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 @Service
@@ -36,17 +39,13 @@ public class BillServiceImpl implements BillService {
     private static final Logger log = LoggerFactory.getLogger(CategoryServiceImpl.class);
 
     @Override
-    public ResponseEntity<String> generateReport(Map<String, String> requestMap) {
+    public ResponseEntity<String> generateReport(Map<String, Object> requestMap) {
         log.info("Inside generateReport");
         try {
             String fileName = null;
             if (validate(requestMap)) {
-                if (requestMap.containsKey("isGenerate")) {
-                    Object isGenerateValue = requestMap.get("isGenerate");
-
-                    if (isGenerateValue instanceof Boolean && !(Boolean) isGenerateValue) {
-                        fileName = requestMap.get("uuid");
-                    }
+                if (requestMap.containsKey("isGenerate") && !(Boolean) requestMap.get("isGenerate")) {
+                    fileName = (String) requestMap.get("uuid");
                 } else {
                     fileName = CafaUtils.getUUID();
                     requestMap.put("uuid", fileName);
@@ -71,7 +70,7 @@ public class BillServiceImpl implements BillService {
                 table.setWidthPercentage(100);
                 createTableHeader(table);
 
-                JSONArray jsonArray = CafaUtils.getJsonArrayFromString(requestMap.get("productDetails"));
+                JSONArray jsonArray = CafaUtils.getJsonArrayFromString((String) requestMap.get("productDetails"));
                 for (int i = 0; i < jsonArray.length(); i++) {
                     createRow(table, CafaUtils.getMapFromJson(jsonArray.getString(i)));
                 }
@@ -98,7 +97,7 @@ public class BillServiceImpl implements BillService {
         table.addCell(Double.toString((Double) data.get("total")));
     }
 
-    private boolean validate(Map<String, String> requestMap) {
+    private boolean validate(Map<String, Object> requestMap) {
         return requestMap.containsKey("name") &&
                 requestMap.containsKey("contactNumber") &&
                 requestMap.containsKey("email") &&
@@ -108,20 +107,21 @@ public class BillServiceImpl implements BillService {
 
     }
 
-    private void insertBill(Map<String, String> requestMap) {
+    private void insertBill(Map<String, Object> requestMap) {
         try {
             Bill bill = new Bill();
-            bill.setUuid(requestMap.get("uuid"));
-            bill.setName(requestMap.get("name"));
-            bill.setEmail(requestMap.get("email"));
-            bill.setContactNumber(requestMap.get("contactNumber"));
-            bill.setPaymentMethod(requestMap.get("paymentMethod"));
-
+            bill.setUuid((String) requestMap.get("uuid"));
+            bill.setName((String) requestMap.get("name"));
+            bill.setEmail((String) requestMap.get("email"));
+            bill.setContactNumber((String) requestMap.get("contactNumber"));
+            bill.setPaymentMethod((String) requestMap.get("paymentMethod"));
             if (requestMap.containsKey("totalAmount")) {
-                bill.setTotal(Integer.parseInt(requestMap.get("totalAmount")));
+                String totalAmount = (String) requestMap.get("totalAmount");
+                if (totalAmount != null && !totalAmount.isEmpty()) {
+                    bill.setTotal(Integer.parseInt(totalAmount));
+                }
             }
-
-            bill.setProductDetail(requestMap.get("productDetails"));
+            bill.setProductDetails((String) requestMap.get("productDetails"));
             bill.setCreatedBy(jwtFilter.getCurrentUser());
 
             billDao.save(bill);
@@ -182,5 +182,51 @@ public class BillServiceImpl implements BillService {
             list = billDao.getBillByUserName(jwtFilter.getCurrentUser());
         }
         return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<byte[]> getPDF(Map<String, Object> requestMap) {
+        log.info("Inside getPdf : requestMap {}", requestMap);
+        try {
+            byte[] byteArray = new byte[0];
+            if (!requestMap.containsKey("uuid") && validate(requestMap))
+                return new ResponseEntity<>(byteArray, HttpStatus.BAD_REQUEST);
+            String filePath = CafeConstants.STORE_LOCATION + "\\" + (String) requestMap.get("uuid") + ".pdf";
+            if (CafaUtils.isFileExist(filePath)) {
+                byteArray = getByteArray(filePath);
+                return new ResponseEntity<>(byteArray, HttpStatus.OK);
+            } else {
+                requestMap.put("isGenerate", false);
+                generateReport(requestMap);
+                byteArray = getByteArray(filePath);
+                return new ResponseEntity<>(byteArray, HttpStatus.OK);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
+    private byte[] getByteArray(String filePath) throws Exception {
+        File initialFile = new File(filePath);
+        InputStream inputStream = new FileInputStream(initialFile);
+        byte[] byteArray = IOUtils.toByteArray(inputStream);
+        inputStream.close();
+        return byteArray;
+    }
+
+    @Override
+    public ResponseEntity<String> deleteBill(Integer id) {
+        try {
+            Optional optional = billDao.findById(id);
+            if (!optional.isEmpty()) {
+                billDao.deleteById(id);
+                return CafaUtils.getResponseEntity("Bill deleted successfully", HttpStatus.OK);
+            }
+            return CafaUtils.getResponseEntity("Bill id does not exist", HttpStatus.OK);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return CafaUtils.getResponseEntity(CafeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
