@@ -75,7 +75,7 @@ public class BillServiceImpl implements BillService {
                 }
                 document.add(table);
 
-                Paragraph footer = new Paragraph("Total: " + requestMap.get("totalAmount") +
+                Paragraph footer = new Paragraph("Total: " + requestMap.get("totalAmount") + "\n" +
                         "Thank you for visiting. Please visit again!!", getFont("Data"));
                 document.add(footer);
                 document.close();
