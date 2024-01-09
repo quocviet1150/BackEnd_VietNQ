@@ -35,7 +35,7 @@ public class CafaUtils {
     }
 
     public static JSONArray getJsonArrayFromString(String data) throws JSONException {
-        JSONArray jsonArray = new JSONArray();
+        JSONArray jsonArray = new JSONArray(data);
         return jsonArray;
     }
 

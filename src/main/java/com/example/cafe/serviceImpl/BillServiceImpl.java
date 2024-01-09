@@ -12,7 +12,6 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import org.apache.pdfbox.io.IOUtils;
 import org.json.JSONArray;
-import org.mockito.internal.util.io.IOUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +50,7 @@ public class BillServiceImpl implements BillService {
                     requestMap.put("uuid", fileName);
                     insertBill(requestMap);
                 }
-                String data = "Name: " + requestMap.get("name") + "Email: " + requestMap.get("email") + "\n" + "ContactNumber: " + requestMap.get("contactNumber")
+                String data = "Name: " + requestMap.get("name") + "\n"+ "Email: " + requestMap.get("email") + "\n" + "ContactNumber: " + requestMap.get("contactNumber")
                         + "\n" + "PaymentMethod: " + requestMap.get("paymentMethod");
                 Document document = new Document();
                 PdfWriter.getInstance(document, new FileOutputStream(CafeConstants.STORE_LOCATION + "\\" + fileName + ".pdf"));
