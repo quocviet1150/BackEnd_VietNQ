@@ -41,7 +41,7 @@ public class BillServiceImpl implements BillService {
     public ResponseEntity<String> generateReport(Map<String, Object> requestMap) {
         log.info("Inside generateReport");
         try {
-            String fileName = null;
+            String fileName;
             if (validate(requestMap)) {
                 if (requestMap.containsKey("isGenerate") && !(Boolean) requestMap.get("isGenerate")) {
                     fileName = (String) requestMap.get("uuid");
@@ -50,7 +50,7 @@ public class BillServiceImpl implements BillService {
                     requestMap.put("uuid", fileName);
                     insertBill(requestMap);
                 }
-                String data = "Name: " + requestMap.get("name") + "\n"+ "Email: " + requestMap.get("email") + "\n" + "ContactNumber: " + requestMap.get("contactNumber")
+                String data = "Name: " + requestMap.get("name") + "\n" + "Email: " + requestMap.get("email") + "\n" + "ContactNumber: " + requestMap.get("contactNumber")
                         + "\n" + "PaymentMethod: " + requestMap.get("paymentMethod");
                 Document document = new Document();
                 PdfWriter.getInstance(document, new FileOutputStream(CafeConstants.STORE_LOCATION + "\\" + fileName + ".pdf"));
@@ -58,7 +58,7 @@ public class BillServiceImpl implements BillService {
                 document.open();
                 setRectangleInPdf(document);
 
-                Paragraph chuck = new Paragraph("Management Systerm", getFont("Header"));
+                Paragraph chuck = new Paragraph("Management System", getFont("Header"));
                 chuck.setAlignment(Element.ALIGN_BASELINE);
                 document.add(chuck);
 
@@ -78,6 +78,7 @@ public class BillServiceImpl implements BillService {
                 Paragraph footer = new Paragraph("Total: " + requestMap.get("totalAmount") +
                         "Thank you for visiting. Please visit again!!", getFont("Data"));
                 document.add(footer);
+                document.close();
                 return new ResponseEntity<>("{\"uuid\" :\"" + fileName + "\"}", HttpStatus.OK);
             }
             return CafaUtils.getResponseEntity("Required data not found", HttpStatus.BAD_REQUEST);
@@ -114,12 +115,7 @@ public class BillServiceImpl implements BillService {
             bill.setEmail((String) requestMap.get("email"));
             bill.setContactNumber((String) requestMap.get("contactNumber"));
             bill.setPaymentMethod((String) requestMap.get("paymentMethod"));
-            if (requestMap.containsKey("totalAmount")) {
-                String totalAmount = (String) requestMap.get("totalAmount");
-                if (totalAmount != null && !totalAmount.isEmpty()) {
-                    bill.setTotal(Integer.parseInt(totalAmount));
-                }
-            }
+            bill.setTotal(Integer.parseInt((String) requestMap.get("totalAmount")));
             bill.setProductDetails((String) requestMap.get("productDetails"));
             bill.setCreatedBy(jwtFilter.getCurrentUser());
 
