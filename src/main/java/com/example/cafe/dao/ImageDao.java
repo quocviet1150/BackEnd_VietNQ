@@ -8,6 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 public interface ImageDao extends JpaRepository<Image, Long> {
 
-    Image findByImagePath(String fileName);
+    Image findByImagePath(Integer id);
 
 }

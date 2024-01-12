@@ -35,7 +35,7 @@ public class ImageServiceImpl implements ImageService {
     JwtFilter jwtFilter;
 
     @Override
-    public ResponseEntity<String> uploadImage(String name, MultipartFile file) {
+    public ResponseEntity<String> uploadImage(String name,String description, MultipartFile file) {
         try {
             if (jwtFilter.isAdmin()) {
                 String originalFilename = Objects.requireNonNull(file.getOriginalFilename());
@@ -49,6 +49,7 @@ public class ImageServiceImpl implements ImageService {
 
                 Image imageEntity = new Image();
                 imageEntity.setName(name);
+                imageEntity.setDescription(description);
                 imageEntity.setImagePath(imagePath.toString());
                 imageEntity.setFileName(originalFilename);
                 imageDao.save(imageEntity);
@@ -65,11 +66,11 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public ResponseEntity<String> deleteImage(String fileName) {
+    public ResponseEntity<String> deleteImage(Integer id) {
         try {
             if (jwtFilter.isAdmin()) {
-                Path imagePath = Path.of(uploadPath, fileName);
-                Image imageEntity = imageDao.findByImagePath(fileName);
+                Image imageEntity = imageDao.findByImagePath(id);
+                Path imagePath = Path.of(uploadPath,imageEntity.getFileName());
                 if (imageEntity != null) {
                     imageDao.delete(imageEntity);
                     if (Files.exists(imagePath)) {
@@ -91,21 +92,23 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public ResponseEntity<Object> getImage(String fileName) {
+    public ResponseEntity<Object> getImage(Integer id) {
         try {
-            Optional<Image> optionalImage = Optional.ofNullable(imageDao.findByImagePath(fileName));
+            Optional<Image> optionalImage = Optional.ofNullable(imageDao.findByImagePath(id));
             if (optionalImage.isPresent()) {
                 Image image = optionalImage.get();
-                byte[] imageBytes = Files.readAllBytes(Path.of(uploadPath, fileName));
+                Image imageEntity = imageDao.findByImagePath(id);
+                byte[] imageBytes = Files.readAllBytes(Path.of(uploadPath, imageEntity.getFileName()));
                 Map<String, Object> response = new HashMap<>();
                 response.put("name", image.getName());
-                response.put("image", Base64.getEncoder().encodeToString(imageBytes));
+                response.put("description", image.getDescription());
+                response.put("fileName", image.getFileName());
+                response.put("file", Base64.getEncoder().encodeToString(imageBytes));
                 HttpHeaders headers = new HttpHeaders();
                 headers.setContentType(MediaType.APPLICATION_JSON);
-                ByteArrayResource resource = new ByteArrayResource(imageBytes);
                 return ResponseEntity.ok()
                         .headers(headers)
-                        .body(resource);
+                        .body(response);
             } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("File không tồn tại.");
             }

@@ -10,7 +10,7 @@ import java.io.Serializable;
 
 @NamedQuery(name = "Image.deleteByImagePath", query = "DELETE FROM Image i WHERE i.imagePath = :imagePath")
 
-@NamedQuery(name = "Image.findByImagePath", query = "SELECT i FROM Image i WHERE i.fileName = :fileName")
+@NamedQuery(name = "Image.findByImagePath", query = "SELECT i FROM Image i WHERE i.id = :id")
 
 
 
@@ -34,15 +34,20 @@ public class Image implements Serializable {
     @Column(name = "fileName")
     private String fileName;
 
+    @Column(name = "description")
+    private String description;
+
+
     public Image() {
 
     }
 
-    public Image(Integer id, String name, String imagePath, String fileName) {
+    public Image(Integer id, String name, String imagePath, String fileName, String description) {
         this.id = id;
         this.name = name;
         this.imagePath = imagePath;
         this.fileName = fileName;
+        this.description =description;
     }
 
     public Integer getId() {
@@ -75,5 +80,13 @@ public class Image implements Serializable {
 
     public void setFileName(String fileName) {
         this.fileName = fileName;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

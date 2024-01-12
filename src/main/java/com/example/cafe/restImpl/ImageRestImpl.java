@@ -17,9 +17,9 @@ public class ImageRestImpl implements ImageRest {
     ImageService imageService;
 
     @Override
-    public ResponseEntity<String> uploadImage(String name, MultipartFile file) {
+    public ResponseEntity<String> uploadImage(String name, String description,MultipartFile file) {
         try {
-            return imageService.uploadImage(name, file);
+            return imageService.uploadImage(name, description,file);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -27,9 +27,9 @@ public class ImageRestImpl implements ImageRest {
     }
 
     @Override
-    public ResponseEntity<String> deleteImage(String fileName) {
+    public ResponseEntity<String> deleteImage(Integer id) {
         try {
-            return imageService.deleteImage(fileName);
+            return imageService.deleteImage(id);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -37,9 +37,9 @@ public class ImageRestImpl implements ImageRest {
     }
 
     @Override
-    public ResponseEntity<Object> getImage(String fileName) {
+    public ResponseEntity<Object> getImage(Integer id) {
         try {
-            return imageService.getImage(fileName);
+            return imageService.getImage(id);
         } catch (Exception ex) {
             ex.printStackTrace();
         }

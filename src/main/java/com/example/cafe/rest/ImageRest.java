@@ -8,11 +8,11 @@ import org.springframework.web.multipart.MultipartFile;
 public interface ImageRest {
 
     @PostMapping("/upload")
-    ResponseEntity<String> uploadImage(@RequestParam String name, @RequestParam MultipartFile file);
+    ResponseEntity<String> uploadImage(@RequestParam String name,@RequestParam String description, @RequestParam MultipartFile file);
 
-    @DeleteMapping("/delete/{fileName}")
-    ResponseEntity<String> deleteImage( @PathVariable String fileName);
+    @DeleteMapping("/delete/{id}")
+    ResponseEntity<String> deleteImage( @PathVariable Integer id);
 
-    @GetMapping("/get_image/{fileName}")
-    ResponseEntity<Object> getImage( @PathVariable String fileName);
+    @GetMapping("/get_image/{id}")
+    ResponseEntity<Object> getImage( @PathVariable Integer id);
 }
