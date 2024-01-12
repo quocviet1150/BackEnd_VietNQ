@@ -12,6 +12,7 @@ import java.io.Serializable;
 
 @NamedQuery(name = "Image.findByImagePath", query = "SELECT i FROM Image i WHERE i.id = :id")
 
+@NamedQuery(name = "Image.findByStatusTrue", query = "SELECT i FROM Image i WHERE i.status = 'true' ")
 
 
 @Entity
@@ -37,17 +38,21 @@ public class Image implements Serializable {
     @Column(name = "description")
     private String description;
 
+    @Column(name = "status")
+    private String status;
+
 
     public Image() {
 
     }
 
-    public Image(Integer id, String name, String imagePath, String fileName, String description) {
+    public Image(Integer id, String name, String imagePath, String fileName, String description, String status) {
         this.id = id;
         this.name = name;
         this.imagePath = imagePath;
         this.fileName = fileName;
-        this.description =description;
+        this.description = description;
+        this.status = status;
     }
 
     public Integer getId() {
@@ -88,5 +93,13 @@ public class Image implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

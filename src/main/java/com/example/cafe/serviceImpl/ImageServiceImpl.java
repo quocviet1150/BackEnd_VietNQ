@@ -52,6 +52,7 @@ public class ImageServiceImpl implements ImageService {
                 imageEntity.setDescription(description);
                 imageEntity.setImagePath(imagePath.toString());
                 imageEntity.setFileName(originalFilename);
+                imageEntity.setStatus("true");
                 imageDao.save(imageEntity);
 
                 return CafaUtils.getResponseEntity("Upload ảnh thành công.", HttpStatus.OK);
@@ -92,26 +93,29 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public ResponseEntity<Object> getImage(Integer id) {
+    public ResponseEntity<Object> getImage() {
         try {
-            Optional<Image> optionalImage = Optional.ofNullable(imageDao.findByImagePath(id));
-            if (optionalImage.isPresent()) {
-                Image image = optionalImage.get();
-                Image imageEntity = imageDao.findByImagePath(id);
-                byte[] imageBytes = Files.readAllBytes(Path.of(uploadPath, imageEntity.getFileName()));
+            List<Image> images = imageDao.findByStatusTrue();
+            List<Map<String, Object>> responseList = new ArrayList<>();
+
+            for (Image image : images) {
+                byte[] imageBytes = Files.readAllBytes(Path.of(uploadPath, image.getFileName()));
+
                 Map<String, Object> response = new HashMap<>();
                 response.put("name", image.getName());
                 response.put("description", image.getDescription());
                 response.put("fileName", image.getFileName());
                 response.put("file", Base64.getEncoder().encodeToString(imageBytes));
-                HttpHeaders headers = new HttpHeaders();
-                headers.setContentType(MediaType.APPLICATION_JSON);
-                return ResponseEntity.ok()
-                        .headers(headers)
-                        .body(response);
-            } else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("File không tồn tại.");
+                responseList.add(response);
             }
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+
+            return ResponseEntity.ok()
+                    .headers(headers)
+                    .body(responseList);
+
         } catch (IOException ex) {
             ex.printStackTrace();
         }

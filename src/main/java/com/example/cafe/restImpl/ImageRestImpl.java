@@ -37,9 +37,9 @@ public class ImageRestImpl implements ImageRest {
     }
 
     @Override
-    public ResponseEntity<Object> getImage(Integer id) {
+    public ResponseEntity<Object> getImage() {
         try {
-            return imageService.getImage(id);
+            return imageService.getImage();
         } catch (Exception ex) {
             ex.printStackTrace();
         }

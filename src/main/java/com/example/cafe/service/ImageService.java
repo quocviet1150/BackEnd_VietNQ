@@ -9,5 +9,5 @@ public interface ImageService {
 
     ResponseEntity<String> deleteImage(Integer id);
 
-    ResponseEntity<Object> getImage(Integer id);
+    ResponseEntity<Object> getImage();
 }

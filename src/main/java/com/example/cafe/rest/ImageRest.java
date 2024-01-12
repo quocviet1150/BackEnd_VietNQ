@@ -13,6 +13,6 @@ public interface ImageRest {
     @DeleteMapping("/delete/{id}")
     ResponseEntity<String> deleteImage( @PathVariable Integer id);
 
-    @GetMapping("/get_image/{id}")
-    ResponseEntity<Object> getImage( @PathVariable Integer id);
+    @GetMapping("/get_image")
+    ResponseEntity<Object> getImage();
 }
