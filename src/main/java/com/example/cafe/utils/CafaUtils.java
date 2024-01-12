@@ -28,6 +28,10 @@ public class CafaUtils {
         return new ResponseEntity<String>("{\"message\":\"" + responseMessage + "\"}", httpStatus);
     }
 
+    public static ResponseEntity<Object> getResponseEntityVer2(String responseMessage, HttpStatus httpStatus) {
+        return new ResponseEntity<Object>("{\"message\":\"" + responseMessage + "\"}", httpStatus);
+    }
+
     public static String getUUID() {
         Date date = new Date();
         long time = date.getTime();

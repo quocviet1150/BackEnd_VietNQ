@@ -8,15 +8,19 @@ import com.example.cafe.service.ImageService;
 import com.example.cafe.utils.CafaUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
-import java.util.Objects;
+import java.util.*;
 
 @Service
 public class ImageServiceImpl implements ImageService {
@@ -84,5 +88,30 @@ public class ImageServiceImpl implements ImageService {
             ex.printStackTrace();
         }
         return CafaUtils.getResponseEntity(CafeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @Override
+    public ResponseEntity<Object> getImage(String fileName) {
+        try {
+            Optional<Image> optionalImage = Optional.ofNullable(imageDao.findByImagePath(fileName));
+            if (optionalImage.isPresent()) {
+                Image image = optionalImage.get();
+                byte[] imageBytes = Files.readAllBytes(Path.of(uploadPath, fileName));
+                Map<String, Object> response = new HashMap<>();
+                response.put("name", image.getName());
+                response.put("image", Base64.getEncoder().encodeToString(imageBytes));
+                HttpHeaders headers = new HttpHeaders();
+                headers.setContentType(MediaType.APPLICATION_JSON);
+                ByteArrayResource resource = new ByteArrayResource(imageBytes);
+                return ResponseEntity.ok()
+                        .headers(headers)
+                        .body(resource);
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("File không tồn tại.");
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        return CafaUtils.getResponseEntityVer2(CafeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

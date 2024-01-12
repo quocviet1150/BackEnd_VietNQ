@@ -12,4 +12,7 @@ public interface ImageRest {
 
     @DeleteMapping("/delete/{fileName}")
     ResponseEntity<String> deleteImage( @PathVariable String fileName);
+
+    @GetMapping("/get_image/{fileName}")
+    ResponseEntity<Object> getImage( @PathVariable String fileName);
 }
