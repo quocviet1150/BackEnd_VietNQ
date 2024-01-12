@@ -56,9 +56,9 @@ public class UserServiceImpl implements UserService {
                 User user = userDao.findByUserNameId(requestMap.get("userName"));
                 if (Objects.isNull(user)) {
                     userDao.save(getUserFromMap(requestMap));
-                    return CafaUtils.getResponseEntity("save data.", HttpStatus.OK);
+                    return CafaUtils.getResponseEntity("Đăng ký tài khoản thành công.", HttpStatus.OK);
                 } else {
-                    return CafaUtils.getResponseEntity("UserName already exits.", HttpStatus.BAD_REQUEST);
+                    return CafaUtils.getResponseEntity("Đăng ký tài khoản không thành công, Tên đăng nhập đã được sử dụng.", HttpStatus.BAD_REQUEST);
                 }
 
             } else {
@@ -105,7 +105,7 @@ public class UserServiceImpl implements UserService {
                             HttpStatus.OK);
                 }
             } else {
-                return new ResponseEntity<String>("{\"message\":\"" + "Wait for admin approval." + "\"}",
+                return new ResponseEntity<String>("{\"message\":\"" + "Chờ sự phê duyệt của quản trị viên." + "\"}",
                         HttpStatus.BAD_REQUEST);
             }
         } catch (Exception ex) {
@@ -137,9 +137,9 @@ public class UserServiceImpl implements UserService {
                 if (!optional.isEmpty()) {
                     userDao.updateStatus(requestMap.get("status"), Integer.parseInt(requestMap.get("id")));
 //                    sendMailToAllAdmin(requestMap.get("status"), optional.get().getEmail(), userDao.getAllAdmin());
-                    return CafaUtils.getResponseEntity("User status update successfully", HttpStatus.OK);
+                    return CafaUtils.getResponseEntity("Cập nhật trạng thái người dùng thành công.", HttpStatus.OK);
                 } else {
-                    return CafaUtils.getResponseEntity("User is doesn't not exist", HttpStatus.BAD_REQUEST);
+                    return CafaUtils.getResponseEntity("Người dùng không tồn tại.", HttpStatus.BAD_REQUEST);
                 }
             } else {
                 return CafaUtils.getResponseEntity(CafeConstants.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
@@ -174,9 +174,9 @@ public class UserServiceImpl implements UserService {
                 if (userObj.getPassword().equals(requestMap.get("oldPassword"))) {
                     userObj.setPassword(requestMap.get("newPassword"));
                     userDao.save(userObj);
-                    return CafaUtils.getResponseEntity("Password Updated SuccessFully", HttpStatus.OK);
+                    return CafaUtils.getResponseEntity("Cập nhật mật khẩu thành công.", HttpStatus.OK);
                 }
-                return CafaUtils.getResponseEntity("Incorrect Old password", HttpStatus.BAD_REQUEST);
+                return CafaUtils.getResponseEntity("Mật mã cũ không chính xác.", HttpStatus.BAD_REQUEST);
             }
             return CafaUtils.getResponseEntity(CafeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
         } catch (Exception ex) {
@@ -209,9 +209,9 @@ public class UserServiceImpl implements UserService {
                 if (userOptional.isPresent()) {
                     User user = userOptional.get();
                     userDao.delete(user);
-                    return CafaUtils.getResponseEntity("User deleted successfully", HttpStatus.OK);
+                    return CafaUtils.getResponseEntity("Đã xóa thành công người dùng.", HttpStatus.OK);
                 } else {
-                    return CafaUtils.getResponseEntity("User not found", HttpStatus.NOT_FOUND);
+                    return CafaUtils.getResponseEntity("Không tìm thấy người dùng.", HttpStatus.NOT_FOUND);
                 }
             } else {
                 return CafaUtils.getResponseEntity(CafeConstants.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
