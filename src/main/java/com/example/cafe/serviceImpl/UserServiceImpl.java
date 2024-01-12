@@ -221,4 +221,48 @@ public class UserServiceImpl implements UserService {
         }
         return CafaUtils.getResponseEntity(CafeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    @Override
+    public ResponseEntity<String> updateDecentralization(Map<String, String> requestMap) {
+        try {
+            if (jwtFilter.isAdmin()) {
+                if (validate(requestMap, true)) {
+                    Optional<User> optional = userDao.findById(Integer.parseInt(requestMap.get("id")));
+                    if (!optional.isEmpty()) {
+                        userDao.save(geUserFromMap(requestMap, true));
+                        return CafaUtils.getResponseEntity("Cập nhật quyền của người dùng thành công", HttpStatus.OK);
+                    } else {
+                        return CafaUtils.getResponseEntity("Người dùng không tồn tại", HttpStatus.OK);
+                    }
+                }
+                return CafaUtils.getResponseEntity(CafeConstants.INVALID_DATA, HttpStatus.BAD_REQUEST);
+
+            } else {
+                return CafaUtils.getResponseEntity(CafeConstants.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return CafaUtils.getResponseEntity(CafeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    private User geUserFromMap(Map<String, String> requestMap, boolean isAdd) {
+        User user = new User();
+        if (isAdd) {
+            user.setId(Integer.parseInt(requestMap.get("id")));
+        }
+        user.setName(requestMap.get("role"));
+        return user;
+    }
+
+    private boolean validate(Map<String, String> requestMap, boolean validateId) {
+        if (requestMap.containsKey("role")) {
+            if (requestMap.containsKey("id") && validateId) {
+                return true;
+            } else if (!validateId) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

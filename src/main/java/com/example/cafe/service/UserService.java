@@ -24,4 +24,6 @@ public interface UserService {
 //    ResponseEntity<String> forgotPassword(Map<String, String> requestMap);
 
     ResponseEntity<String> deleteUser(Integer userId);
+
+    ResponseEntity<String> updateDecentralization(Map<String, String> requestMap);
 }

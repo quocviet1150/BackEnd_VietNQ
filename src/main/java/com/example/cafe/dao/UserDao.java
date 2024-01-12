@@ -23,4 +23,8 @@ public interface UserDao extends JpaRepository<User, Integer> {
 
     User findByUserName(String userName);
 
+    @Transactional
+    @Modifying
+    Integer updateDecentralization(@Param("role") String role, @Param("id") Integer id);
+
 }

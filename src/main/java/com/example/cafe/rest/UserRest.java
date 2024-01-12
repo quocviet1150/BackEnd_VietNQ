@@ -32,6 +32,9 @@ public interface UserRest {
 //    @PostMapping(path = "/forgotPassword")
 //    ResponseEntity<String> forgotPassword(@RequestBody Map<String, String> requestMap);
 
-    @DeleteMapping(path = "/delete_user/{userId}")
+    @PostMapping(path = "/delete_user/{userId}")
     ResponseEntity<String> deleteUser(@PathVariable Integer userId);
+
+    @PostMapping(path = "/update_decentralization")
+    ResponseEntity<String> updateDecentralization(@RequestBody(required = true) Map<String,String> requestMap);
 }

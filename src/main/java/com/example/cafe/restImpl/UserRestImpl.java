@@ -90,6 +90,16 @@ public class UserRestImpl implements UserRest {
         return CafaUtils.getResponseEntity(CafeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    @Override
+    public ResponseEntity<String> updateDecentralization(Map<String, String> requestMap) {
+        try {
+            return userService.updateDecentralization(requestMap);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return CafaUtils.getResponseEntity(CafeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
 //    @Override
 //    public ResponseEntity<String> forgotPassword(Map<String, String> requestMap) {
 //        try {
