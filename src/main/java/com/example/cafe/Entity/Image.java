@@ -14,6 +14,8 @@ import java.io.Serializable;
 
 @NamedQuery(name = "Image.findByStatusTrue", query = "SELECT i FROM Image i WHERE i.status = 'true' ")
 
+@NamedQuery(name = "Image.updateStatus", query = "update Image i set i.status=:status where i.id=:id")
+
 
 @Entity
 @DynamicUpdate

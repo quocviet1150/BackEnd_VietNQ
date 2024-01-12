@@ -4,6 +4,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Map;
+
 @RequestMapping(path = "image")
 public interface ImageRest {
 
@@ -15,4 +17,7 @@ public interface ImageRest {
 
     @GetMapping("/get_image")
     ResponseEntity<Object> getImage();
+
+    @PostMapping(path = "/update_status")
+    ResponseEntity<String> update(@RequestBody(required = true) Map<String,String> requestMap);
 }

@@ -1,6 +1,7 @@
 package com.example.cafe.serviceImpl;
 
 import com.example.cafe.Entity.Image;
+import com.example.cafe.Entity.User;
 import com.example.cafe.JWT.JwtFilter;
 import com.example.cafe.constents.CafeConstants;
 import com.example.cafe.dao.ImageDao;
@@ -120,5 +121,26 @@ public class ImageServiceImpl implements ImageService {
             ex.printStackTrace();
         }
         return CafaUtils.getResponseEntityVer2(CafeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @Override
+    public ResponseEntity<String> update(Map<String, String> requestMap) {
+        try {
+            if (jwtFilter.isAdmin()) {
+                Optional<Image> optional = imageDao.findById(Integer.parseInt(requestMap.get("id")));
+                if (!optional.isEmpty()) {
+                    imageDao.updateStatus(requestMap.get("status"), Integer.parseInt(requestMap.get("id")));
+//                    sendMailToAllAdmin(requestMap.get("status"), optional.get().getEmail(), userDao.getAllAdmin());
+                    return CafaUtils.getResponseEntity("Cập nhật trạng thái người dùng thành công.", HttpStatus.OK);
+                } else {
+                    return CafaUtils.getResponseEntity("Người dùng không tồn tại.", HttpStatus.BAD_REQUEST);
+                }
+            } else {
+                return CafaUtils.getResponseEntity(CafeConstants.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return CafaUtils.getResponseEntity(CafeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
