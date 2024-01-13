@@ -27,4 +27,6 @@ public interface UserDao extends JpaRepository<User, Integer> {
     @Modifying
     Integer updateDecentralization(@Param("role") String role, @Param("id") Integer id);
 
+    Integer countByRole(String role);
+
 }
