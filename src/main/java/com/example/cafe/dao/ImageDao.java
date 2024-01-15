@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ImageDao extends JpaRepository<Image, Integer> {
 
@@ -19,6 +20,7 @@ public interface ImageDao extends JpaRepository<Image, Integer> {
     @Modifying
     Integer updateStatus(@Param("status") String status, @Param("id") Integer id);
 
-    Integer countByStatus(String status);
+
+    Optional<Image> findByFileName(String fileName);
 
 }

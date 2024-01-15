@@ -9,6 +9,8 @@ public interface ImageService {
 
     ResponseEntity<String> uploadImage(String name,String description, MultipartFile file);
 
+    ResponseEntity<String> update(String name,String description, MultipartFile file);
+
     ResponseEntity<String> deleteImage(Integer id);
 
     ResponseEntity<Object> getImage();

@@ -29,6 +29,16 @@ public class ImageRestImpl implements ImageRest {
     }
 
     @Override
+    public ResponseEntity<String> update(String name, String description, MultipartFile file) {
+        try {
+            return imageService.update(name, description,file);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return CafaUtils.getResponseEntity(CafeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @Override
     public ResponseEntity<String> deleteImage(Integer id) {
         try {
             return imageService.deleteImage(id);

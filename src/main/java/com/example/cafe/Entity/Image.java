@@ -16,6 +16,8 @@ import java.io.Serializable;
 
 @NamedQuery(name = "Image.updateStatus", query = "update Image i set i.status=:status where i.id=:id")
 
+@NamedQuery(name = "Image.findByFileName", query = "SELECT i FROM Image i WHERE i.fileName = :fileName")
+
 
 
 @Entity

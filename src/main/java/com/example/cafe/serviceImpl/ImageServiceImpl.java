@@ -68,6 +68,33 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
+    public ResponseEntity<String> update(String name, String description, MultipartFile file) {
+        try {
+            if (jwtFilter.isAdmin()) {
+                String originalFilename = Objects.requireNonNull(file.getOriginalFilename());
+                Path imagePath = Path.of(uploadPath, originalFilename);
+                Optional<Image> existingImage = imageDao.findByFileName(originalFilename);
+                if (existingImage.isPresent()) {
+                    Image imageEntity = existingImage.get();
+                    imageEntity.setName(name);
+                    imageEntity.setDescription(description);
+                    imageEntity.setImagePath(imagePath.toString());
+                    imageEntity.setStatus("true");
+                    imageDao.save(imageEntity);
+                    Files.copy(file.getInputStream(), imagePath, StandardCopyOption.REPLACE_EXISTING);
+                    return CafaUtils.getResponseEntity("Cập nhật ảnh thành công.", HttpStatus.OK);
+                } else {
+                    return CafaUtils.getResponseEntity(CafeConstants.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
+                }
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        return CafaUtils.getResponseEntity(CafeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @Override
     public ResponseEntity<String> deleteImage(Integer id) {
         try {
             if (jwtFilter.isAdmin()) {
@@ -135,11 +162,11 @@ public class ImageServiceImpl implements ImageService {
                     byte[] imageBytes = Files.readAllBytes(Path.of(uploadPath, image.getFileName()));
 
                     Map<String, Object> response = new HashMap<>();
-                    response.put("id",image.getId());
+                    response.put("id", image.getId());
                     response.put("name", image.getName());
                     response.put("description", image.getDescription());
                     response.put("fileName", image.getFileName());
-                    response.put("status",image.getStatus());
+                    response.put("status", image.getStatus());
                     response.put("file", Base64.getEncoder().encodeToString(imageBytes));
                     responseList.add(response);
                 }
