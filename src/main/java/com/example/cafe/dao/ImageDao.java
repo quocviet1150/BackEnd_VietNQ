@@ -19,4 +19,6 @@ public interface ImageDao extends JpaRepository<Image, Integer> {
     @Modifying
     Integer updateStatus(@Param("status") String status, @Param("id") Integer id);
 
+    Integer countByStatus(String status);
+
 }

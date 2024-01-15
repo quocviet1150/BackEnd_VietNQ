@@ -1,9 +1,6 @@
 package com.example.cafe.serviceImpl;
 
-import com.example.cafe.dao.BillDao;
-import com.example.cafe.dao.CategoryDao;
-import com.example.cafe.dao.ProductDao;
-import com.example.cafe.dao.UserDao;
+import com.example.cafe.dao.*;
 import com.example.cafe.service.DashboardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,6 +25,9 @@ public class DashboardServiceImpl implements DashboardService {
     @Autowired
     UserDao userDao;
 
+    @Autowired
+    ImageDao imageDao;
+
     @Override
     public ResponseEntity<Map<String, Object>> getCount() {
         Map<String, Object> map = new HashMap<>();
@@ -35,6 +35,7 @@ public class DashboardServiceImpl implements DashboardService {
         map.put("product", productDao.count());
         map.put("bill", billDao.count());
         map.put("user", userDao.countByRole("user"));
+        map.put("image", imageDao.count());
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
 }
