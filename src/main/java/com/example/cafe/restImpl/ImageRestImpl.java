@@ -49,6 +49,16 @@ public class ImageRestImpl implements ImageRest {
     }
 
     @Override
+    public ResponseEntity<Object> getImageAll() {
+        try {
+            return imageService.getImageAll();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return CafaUtils.getResponseEntityVer2(CafeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @Override
     public ResponseEntity<String> update(Map<String, String> requestMap) {
         try {
             return imageService.update(requestMap);

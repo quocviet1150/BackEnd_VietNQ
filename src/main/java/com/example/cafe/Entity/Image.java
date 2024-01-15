@@ -43,7 +43,6 @@ public class Image implements Serializable {
     @Column(name = "status")
     private String status;
 
-
     public Image() {
 
     }
@@ -104,4 +103,5 @@ public class Image implements Serializable {
     public void setStatus(String status) {
         this.status = status;
     }
+
 }

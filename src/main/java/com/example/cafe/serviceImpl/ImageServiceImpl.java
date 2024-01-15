@@ -36,7 +36,7 @@ public class ImageServiceImpl implements ImageService {
     JwtFilter jwtFilter;
 
     @Override
-    public ResponseEntity<String> uploadImage(String name,String description, MultipartFile file) {
+    public ResponseEntity<String> uploadImage(String name, String description, MultipartFile file) {
         try {
             if (jwtFilter.isAdmin()) {
                 String originalFilename = Objects.requireNonNull(file.getOriginalFilename());
@@ -72,7 +72,7 @@ public class ImageServiceImpl implements ImageService {
         try {
             if (jwtFilter.isAdmin()) {
                 Image imageEntity = imageDao.findByImagePath(id);
-                Path imagePath = Path.of(uploadPath,imageEntity.getFileName());
+                Path imagePath = Path.of(uploadPath, imageEntity.getFileName());
                 if (imageEntity != null) {
                     imageDao.delete(imageEntity);
                     if (Files.exists(imagePath)) {
@@ -106,6 +106,7 @@ public class ImageServiceImpl implements ImageService {
                 response.put("name", image.getName());
                 response.put("description", image.getDescription());
                 response.put("fileName", image.getFileName());
+                response.put("imagePath", image.getImagePath());
                 response.put("file", Base64.getEncoder().encodeToString(imageBytes));
                 responseList.add(response);
             }
@@ -116,6 +117,42 @@ public class ImageServiceImpl implements ImageService {
             return ResponseEntity.ok()
                     .headers(headers)
                     .body(responseList);
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        return CafaUtils.getResponseEntityVer2(CafeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @Override
+    public ResponseEntity<Object> getImageAll() {
+        try {
+            if (jwtFilter.isAdmin()) {
+                List<Image> images = imageDao.findAll();
+                List<Map<String, Object>> responseList = new ArrayList<>();
+
+                for (Image image : images) {
+                    byte[] imageBytes = Files.readAllBytes(Path.of(uploadPath, image.getFileName()));
+
+                    Map<String, Object> response = new HashMap<>();
+                    response.put("id",image.getId());
+                    response.put("name", image.getName());
+                    response.put("description", image.getDescription());
+                    response.put("fileName", image.getFileName());
+                    response.put("status",image.getStatus());
+                    response.put("file", Base64.getEncoder().encodeToString(imageBytes));
+                    responseList.add(response);
+                }
+
+                HttpHeaders headers = new HttpHeaders();
+                headers.setContentType(MediaType.APPLICATION_JSON);
+
+                return ResponseEntity.ok()
+                        .headers(headers)
+                        .body(responseList);
+            } else {
+                return CafaUtils.getResponseEntityVer2(CafeConstants.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
+            }
 
         } catch (IOException ex) {
             ex.printStackTrace();

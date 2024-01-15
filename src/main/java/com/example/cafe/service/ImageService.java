@@ -13,5 +13,7 @@ public interface ImageService {
 
     ResponseEntity<Object> getImage();
 
+    ResponseEntity<Object> getImageAll();
+
     ResponseEntity<String> update(Map<String, String> requestMap);
 }

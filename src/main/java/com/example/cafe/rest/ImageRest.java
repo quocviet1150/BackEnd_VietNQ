@@ -12,11 +12,14 @@ public interface ImageRest {
     @PostMapping("/upload")
     ResponseEntity<String> uploadImage(@RequestParam String name,@RequestParam String description, @RequestParam MultipartFile file);
 
-    @DeleteMapping("/delete/{id}")
+    @PostMapping("/delete/{id}")
     ResponseEntity<String> deleteImage( @PathVariable Integer id);
 
     @GetMapping("/get_image")
     ResponseEntity<Object> getImage();
+
+    @GetMapping("/get_image_all")
+    ResponseEntity<Object> getImageAll();
 
     @PostMapping(path = "/update_status")
     ResponseEntity<String> update(@RequestBody(required = true) Map<String,String> requestMap);
