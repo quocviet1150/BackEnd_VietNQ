@@ -51,7 +51,7 @@ public class CategoryServiceImpl implements CategoryService {
             if (jwtFilter.isAdmin()) {
                     if (validate(requestMap, false)) {
                     categoryDao.save(getCategoryFromMap(requestMap, false));
-                    return ProjectUtils.getResponseEntity("Category create Succesfully", HttpStatus.OK);
+                    return ProjectUtils.getResponseEntity("Tạo mới danh mục sản phẩm thành công", HttpStatus.OK);
                 }
             } else {
                 return ProjectUtils.getResponseEntity(CafeConstants.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
@@ -93,9 +93,9 @@ public class CategoryServiceImpl implements CategoryService {
                     Optional optional = categoryDao.findById(Integer.parseInt(requestMap.get("id")));
                     if (!optional.isEmpty()) {
                         categoryDao.save(getCategoryFromMap(requestMap, true));
-                        return ProjectUtils.getResponseEntity("Categories Updated successfully", HttpStatus.OK);
+                        return ProjectUtils.getResponseEntity("Cập nhật danh mục sản phẩm thành công", HttpStatus.OK);
                     } else {
-                        return ProjectUtils.getResponseEntity("Categories is does not exist", HttpStatus.OK);
+                        return ProjectUtils.getResponseEntity("Không tìm thấy danh mục sản phẩm này", HttpStatus.OK);
                     }
                 }
                 return ProjectUtils.getResponseEntity(CafeConstants.INVALID_DATA, HttpStatus.BAD_REQUEST);

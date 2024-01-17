@@ -112,7 +112,7 @@ public class UserServiceImpl implements UserService {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        return new ResponseEntity<>("{\"message\":\"" + "Bad credentials." + "\"}",
+        return new ResponseEntity<>("{\"message\":\"" + "Sai mật khẩu hoặc tài khoản." + "\"}",
                 HttpStatus.BAD_REQUEST);
     }
 
