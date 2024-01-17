@@ -1,5 +1,6 @@
 package com.example.cafe.Rest.Impl;
 
+import com.example.cafe.Config.CustomerUserDetailsService;
 import com.example.cafe.Constants.CafeConstants;
 import com.example.cafe.Rest.UserRest;
 import com.example.cafe.Service.UserService;
@@ -19,6 +20,10 @@ public class UserRestImpl implements UserRest {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    private CustomerUserDetailsService customerUserDetailsService;
+
 
     @Override
     public ResponseEntity<String> signUp(Map<String, String> requestMap) {
@@ -98,6 +103,16 @@ public class UserRestImpl implements UserRest {
             ex.printStackTrace();
         }
         return ProjectUtils.getResponseEntity(CafeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @Override
+    public ResponseEntity<com.example.cafe.Entity.User> getDetailLogin() {
+        com.example.cafe.Entity.User currentUserDetail = customerUserDetailsService.getUserDetail();
+        if (currentUserDetail != null) {
+            return new ResponseEntity<>(currentUserDetail, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
     }
 
 //    @Override

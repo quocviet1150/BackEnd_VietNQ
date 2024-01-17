@@ -4,6 +4,8 @@ import com.example.cafe.DAO.UserDAO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -34,6 +36,13 @@ public class CustomerUserDetailsService implements UserDetailsService {
     }
 
     public com.example.cafe.Entity.User getUserDetail() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null) {
+            Object principal = authentication.getPrincipal();
+            if (principal instanceof com.example.cafe.Entity.User) {
+                return (com.example.cafe.Entity.User) principal;
+            }
+        }
         return userDetail;
     }
 }

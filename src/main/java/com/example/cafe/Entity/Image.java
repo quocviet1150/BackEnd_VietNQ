@@ -12,7 +12,7 @@ import java.io.Serializable;
 
 @NamedQuery(name = "Image.findByImagePath", query = "SELECT i FROM Image i WHERE i.id = :id")
 
-@NamedQuery(name = "Image.findByStatusTrue", query = "SELECT i FROM Image i WHERE i.status = 'true' ")
+@NamedQuery(name = "Image.findByStatusTrue", query = "SELECT i FROM Image i WHERE i.status = 'true' order by i.id desc")
 
 @NamedQuery(name = "Image.updateStatus", query = "update Image i set i.status=:status where i.id=:id")
 

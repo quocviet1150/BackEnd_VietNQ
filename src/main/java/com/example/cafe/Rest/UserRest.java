@@ -36,4 +36,8 @@ public interface UserRest {
 
     @PostMapping(path = "/update_decentralization")
     ResponseEntity<String> updateDecentralization(@RequestBody(required = true) Map<String,String> requestMap);
+
+    @GetMapping(path = "/get_detail_login")
+    ResponseEntity<com.example.cafe.Entity.User> getDetailLogin();
+
 }

@@ -114,6 +114,8 @@ public class UserServiceImpl implements UserService {
                 HttpStatus.BAD_REQUEST);
     }
 
+
+
     @Override
     public ResponseEntity<List<UserDTO>> getAllUser() {
         try {
