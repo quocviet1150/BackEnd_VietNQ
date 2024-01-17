@@ -98,19 +98,21 @@ public class UserServiceImpl implements UserService {
             );
             if (auth.isAuthenticated()) {
                 if (customerUserDetailsService.getUserDetail().getStatus().equalsIgnoreCase("true")) {
-                    return new ResponseEntity<String>("{\"token\":\"" +
+                    return new ResponseEntity<>("{\"token\":\"" +
                             jwtUtil.generateToken(customerUserDetailsService.getUserDetail().getUserName(),
                                     customerUserDetailsService.getUserDetail().getRole()) + "\"}",
                             HttpStatus.OK);
+                } else {
+                    return new ResponseEntity<>("{\"message\":\"" + "Tài khoản quý khách đã ngưng hoạt động" + "\"}", HttpStatus.BAD_REQUEST);
                 }
             } else {
-                return new ResponseEntity<String>("{\"message\":\"" + "Chờ sự phê duyệt của quản trị viên." + "\"}",
+                return new ResponseEntity<>("{\"message\":\"" + "Chờ sự phê duyệt của quản trị viên." + "\"}",
                         HttpStatus.BAD_REQUEST);
             }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        return new ResponseEntity<String>("{\"message\":\"" + "Bad credentials." + "\"}",
+        return new ResponseEntity<>("{\"message\":\"" + "Bad credentials." + "\"}",
                 HttpStatus.BAD_REQUEST);
     }
 

@@ -21,4 +21,7 @@ public interface CategoryRest {
 
     @PostMapping(path = "/update_category")
     ResponseEntity<String> updateCategory(@RequestBody(required = true) Map<String, String> requestMap);
+
+    @PostMapping(path = "/update")
+    ResponseEntity<String> update(@RequestBody(required = true) Map<String,String> requestMap);
 }

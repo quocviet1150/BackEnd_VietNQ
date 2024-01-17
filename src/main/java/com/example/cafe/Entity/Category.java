@@ -10,6 +10,8 @@ import java.io.Serializable;
 @NamedQuery(name = "Category.getAllCategory", query = "SELECT c FROM Category c where c.id in (select p.category " +
         "from Product p where p.status = 'true') order by c.id desc")
 
+@NamedQuery(name = "Category.updateStatus", query = "update Category c set c.status=:status where c.id=:id")
+
 @Entity
 @DynamicUpdate
 @DynamicInsert
@@ -25,6 +27,9 @@ public class Category implements Serializable {
 
     @Column(name = "name")
     private String name;
+
+    @Column(name = "status")
+    private String status;
 
     public Category() {
 
@@ -44,5 +49,13 @@ public class Category implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

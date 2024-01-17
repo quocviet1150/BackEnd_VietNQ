@@ -4,6 +4,7 @@ import com.example.cafe.Entity.Category;
 import com.example.cafe.Config.JwtFilter;
 import com.example.cafe.Constants.CafeConstants;
 import com.example.cafe.DAO.CategoryDAO;
+import com.example.cafe.Entity.User;
 import com.example.cafe.Service.CategoryService;
 import com.example.cafe.Utils.ProjectUtils;
 import com.google.common.base.Strings;
@@ -48,7 +49,7 @@ public class CategoryServiceImpl implements CategoryService {
     public ResponseEntity<String> createCategory(Map<String, String> requestMap) {
         try {
             if (jwtFilter.isAdmin()) {
-                if (validate(requestMap, false)) {
+                    if (validate(requestMap, false)) {
                     categoryDao.save(getCategoryFromMap(requestMap, false));
                     return ProjectUtils.getResponseEntity("Category create Succesfully", HttpStatus.OK);
                 }
@@ -124,7 +125,29 @@ public class CategoryServiceImpl implements CategoryService {
             category.setId(Integer.parseInt(requestMap.get("id")));
         }
         category.setName(requestMap.get("name"));
+        category.setStatus("true");
         return category;
+    }
+
+    @Override
+    public ResponseEntity<String> update(Map<String, String> requestMap) {
+        try {
+            if (jwtFilter.isAdmin()) {
+                Optional<Category> optional = categoryDao.findById(Integer.parseInt(requestMap.get("id")));
+                if (!optional.isEmpty()) {
+                    categoryDao.updateStatus(requestMap.get("status"), Integer.parseInt(requestMap.get("id")));
+//                    sendMailToAllAdmin(requestMap.get("status"), optional.get().getEmail(), userDao.getAllAdmin());
+                    return ProjectUtils.getResponseEntity("Cập nhật trạng thái người dùng thành công.", HttpStatus.OK);
+                } else {
+                    return ProjectUtils.getResponseEntity("Người dùng không tồn tại.", HttpStatus.BAD_REQUEST);
+                }
+            } else {
+                return ProjectUtils.getResponseEntity(CafeConstants.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return ProjectUtils.getResponseEntity(CafeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 }
