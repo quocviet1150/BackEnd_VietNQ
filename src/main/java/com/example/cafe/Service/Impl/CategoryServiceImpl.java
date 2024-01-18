@@ -46,10 +46,20 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    public ResponseEntity<List<Category>> getAllCategoryStatus() {
+        try {
+            return new ResponseEntity<List<Category>>(categoryDao.getAllCategoryStatus(), HttpStatus.OK);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return new ResponseEntity<List<Category>>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @Override
     public ResponseEntity<String> createCategory(Map<String, String> requestMap) {
         try {
             if (jwtFilter.isAdmin()) {
-                    if (validate(requestMap, false)) {
+                if (validate(requestMap, false)) {
                     categoryDao.save(getCategoryFromMap(requestMap, false));
                     return ProjectUtils.getResponseEntity("Category create Succesfully", HttpStatus.OK);
                 }

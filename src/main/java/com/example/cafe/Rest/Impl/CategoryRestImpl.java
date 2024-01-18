@@ -31,6 +31,16 @@ public class CategoryRestImpl implements CategoryRest {
     }
 
     @Override
+    public ResponseEntity<List<Category>> getAllCategoryStatus() {
+        try {
+            return categoryService.getAllCategoryStatus();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return new ResponseEntity<List<Category>>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @Override
     public ResponseEntity<String> createCategory(Map<String, String> requestMap) {
         try {
             return categoryService.createCategory(requestMap);

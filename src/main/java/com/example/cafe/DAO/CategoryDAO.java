@@ -12,6 +12,8 @@ public interface CategoryDAO extends JpaRepository<Category, Integer> {
 
     List<Category> getAllCategory();
 
+    List<Category> getAllCategoryStatus();
+
     //    List<Integer> deleteCategory();
     @Transactional
     @Modifying

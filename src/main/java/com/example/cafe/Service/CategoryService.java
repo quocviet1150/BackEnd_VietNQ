@@ -10,6 +10,8 @@ public interface CategoryService {
 
     ResponseEntity<List<Category>> getAllCategory(String filterValue);
 
+    ResponseEntity<List<Category>> getAllCategoryStatus();
+
     ResponseEntity<String> createCategory(Map<String, String> requestMap);
 
 //    ResponseEntity<String> deleteCategory(List<Integer> categoryIds);

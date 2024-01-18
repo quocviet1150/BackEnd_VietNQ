@@ -10,6 +10,15 @@ import java.io.Serializable;
 @NamedQuery(name = "Category.getAllCategory", query = "SELECT c FROM Category c where c.id in (select p.category " +
         "from Product p where p.status = 'true') order by c.id desc")
 
+@NamedQuery(
+        name = "Category.getAllCategoryStatus",
+        query = "SELECT c FROM Category c " +
+                "where c.id in (select p.category.id from Product p where p.status = 'true') " +
+                "and c.status = 'true' " +
+                "order by c.id desc"
+)
+
+
 @NamedQuery(name = "Category.updateStatus", query = "update Category c set c.status=:status where c.id=:id")
 
 @Entity

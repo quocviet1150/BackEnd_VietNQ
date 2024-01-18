@@ -10,7 +10,7 @@ import java.io.Serializable;
 @NamedQuery(name = "User.findByUserNameId", query = "select u from User u where u.userName=:userName")
 
 @NamedQuery(name = "User.getAllUser", query = "SELECT new com.example.cafe.DTO.UserDTO(u.id, u.name," +
-        " u.userName, u.contactNumber,u.role, u.status) FROM User u order by u.id desc")
+        " u.userName, u.contactNumber,u.role, u.status) FROM User u WHERE u.role ='user' order by u.id desc ")
 
 @NamedQuery(name = "User.getAllAdmin", query = "SELECT u.userName FROM User u WHERE u.role = 'admin'")
 
