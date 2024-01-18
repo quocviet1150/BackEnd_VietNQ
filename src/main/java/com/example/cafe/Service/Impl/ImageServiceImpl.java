@@ -193,9 +193,9 @@ public class ImageServiceImpl implements ImageService {
                 if (!optional.isEmpty()) {
                     imageDao.updateStatus(requestMap.get("status"), Integer.parseInt(requestMap.get("id")));
 //                    sendMailToAllAdmin(requestMap.get("status"), optional.get().getEmail(), userDao.getAllAdmin());
-                    return ProjectUtils.getResponseEntity("Cập nhật trạng thái người dùng thành công.", HttpStatus.OK);
+                    return ProjectUtils.getResponseEntity("Cập nhật trạng thái ảnh thành công.", HttpStatus.OK);
                 } else {
-                    return ProjectUtils.getResponseEntity("Người dùng không tồn tại.", HttpStatus.BAD_REQUEST);
+                    return ProjectUtils.getResponseEntity("Ảnh không tồn tại.", HttpStatus.BAD_REQUEST);
                 }
             } else {
                 return ProjectUtils.getResponseEntity(CafeConstants.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);

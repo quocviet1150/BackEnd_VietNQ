@@ -81,7 +81,7 @@ public class BillServiceImpl implements BillService {
                 document.close();
                 return new ResponseEntity<>("{\"uuid\" :\"" + fileName + "\"}", HttpStatus.OK);
             }
-            return ProjectUtils.getResponseEntity("Required data not found", HttpStatus.BAD_REQUEST);
+            return ProjectUtils.getResponseEntity("Không tìm thấy dữ liệu cần thiết.", HttpStatus.BAD_REQUEST);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -216,9 +216,9 @@ public class BillServiceImpl implements BillService {
             Optional optional = billDao.findById(id);
             if (!optional.isEmpty()) {
                 billDao.deleteById(id);
-                return ProjectUtils.getResponseEntity("Bill deleted successfully", HttpStatus.OK);
+                return ProjectUtils.getResponseEntity("Hóa đơn đã được xóa thành công.", HttpStatus.OK);
             }
-            return ProjectUtils.getResponseEntity("Bill id does not exist", HttpStatus.OK);
+            return ProjectUtils.getResponseEntity("Hóa đơn không tồn tại.", HttpStatus.OK);
         } catch (Exception ex) {
             ex.printStackTrace();
         }

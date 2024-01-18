@@ -30,7 +30,7 @@ public class ProductServiceImpl implements ProductService {
             if (jwtFilter.isAdmin()) {
                 if (validate(requestMap, false)) {
                     productDao.save(getProductFromMap(requestMap, false));
-                    return ProjectUtils.getResponseEntity("Product Updated successfully", HttpStatus.OK);
+                    return ProjectUtils.getResponseEntity("Tạo mới sản phẩm thành công.", HttpStatus.OK);
                 }
                 return ProjectUtils.getResponseEntity(CafeConstants.INVALID_DATA, HttpStatus.BAD_REQUEST);
             } else {
@@ -62,9 +62,9 @@ public class ProductServiceImpl implements ProductService {
                         Product product = getProductFromMap(requestMap, true);
                         product.setStatus(optional.get().getStatus());
                         productDao.save(product);
-                        return ProjectUtils.getResponseEntity("Product update successfully.", HttpStatus.OK);
+                        return ProjectUtils.getResponseEntity("Cập nhật sản phẩm thành công.", HttpStatus.OK);
                     } else {
-                        return ProjectUtils.getResponseEntity("Product is does not exist.", HttpStatus.OK);
+                        return ProjectUtils.getResponseEntity("Không tìm thấy sản phẩm này.", HttpStatus.OK);
                     }
                 } else {
                     return ProjectUtils.getResponseEntity(CafeConstants.INVALID_DATA, HttpStatus.BAD_REQUEST);
@@ -85,9 +85,9 @@ public class ProductServiceImpl implements ProductService {
                 Optional optional = productDao.findById(id);
                 if (!optional.isEmpty()) {
                     productDao.deleteById(id);
-                    return ProjectUtils.getResponseEntity("Product deleted successfully", HttpStatus.OK);
+                    return ProjectUtils.getResponseEntity("Xóa sản phẩm thành công.", HttpStatus.OK);
                 }
-                return ProjectUtils.getResponseEntity("Product id does not exist", HttpStatus.OK);
+                return ProjectUtils.getResponseEntity("Không tìm thấy sản phẩm này.", HttpStatus.OK);
             } else {
                 return ProjectUtils.getResponseEntity(CafeConstants.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
             }
@@ -104,9 +104,9 @@ public class ProductServiceImpl implements ProductService {
                 Optional optional = productDao.findById(Integer.parseInt(requestMap.get("id")));
                 if (!optional.isEmpty()) {
                     productDao.updateStatus(requestMap.get("status"), Integer.parseInt(requestMap.get("id")));
-                    return ProjectUtils.getResponseEntity("Product updated status successfully", HttpStatus.OK);
+                    return ProjectUtils.getResponseEntity("Cập nhật trạng thái sản phẩm thành công.", HttpStatus.OK);
                 }
-                return ProjectUtils.getResponseEntity("Product id does not exist", HttpStatus.OK);
+                return ProjectUtils.getResponseEntity("Không tìm thấy sản phẩm này.", HttpStatus.OK);
             } else {
                 return ProjectUtils.getResponseEntity(CafeConstants.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
             }
