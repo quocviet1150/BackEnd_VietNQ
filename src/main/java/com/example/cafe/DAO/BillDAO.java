@@ -11,4 +11,6 @@ public interface BillDAO extends JpaRepository<Bill, Integer> {
     List<Bill> getAllBills();
 
     List<Bill> getBillByUserName(@Param("username") String username);
+
+    Integer sumBill();
 }

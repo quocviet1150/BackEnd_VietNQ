@@ -34,6 +34,7 @@ public class DashboardServiceImpl implements DashboardService {
         map.put("category", categoryDao.count());
         map.put("product", productDao.count());
         map.put("bill", billDao.count());
+        map.put("bill", billDao.sumBill());
         map.put("user", userDao.countByRole("user"));
         map.put("image", imageDao.count());
         return new ResponseEntity<>(map, HttpStatus.OK);

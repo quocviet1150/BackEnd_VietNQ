@@ -14,6 +14,8 @@ import java.util.Date;
 
 @NamedQuery(name = "Bill.getBillByUserName", query = "select b from Bill b where b.createdBy=:username order by b.id desc ")
 
+@NamedQuery(name = "Bill.sumBill", query = "SELECT SUM(b.total) FROM Bill b")
+
 @Entity
 @DynamicUpdate
 @DynamicInsert
