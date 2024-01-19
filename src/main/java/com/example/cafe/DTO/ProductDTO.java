@@ -1,5 +1,7 @@
 package com.example.cafe.DTO;
 
+import java.util.Date;
+
 public class ProductDTO {
 
     Integer id;
@@ -7,6 +9,7 @@ public class ProductDTO {
     String description;
     Integer price;
     String status;
+    Date createdDate;
     Integer categoryId;
     String categoryName;
 
@@ -14,7 +17,7 @@ public class ProductDTO {
 
     }
 
-    public ProductDTO(Integer id, String name, String description, Integer price, String status, Integer categoryId, String categoryName) {
+    public ProductDTO(Integer id, String name, String description, Integer price, String status, Integer categoryId, String categoryName, Date createdDate) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -22,6 +25,7 @@ public class ProductDTO {
         this.status = status;
         this.categoryId = categoryId;
         this.categoryName = categoryName;
+        this.createdDate = createdDate;
     }
 
     public ProductDTO(Integer id, String name) {
@@ -90,5 +94,13 @@ public class ProductDTO {
 
     public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
+    }
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
     }
 }

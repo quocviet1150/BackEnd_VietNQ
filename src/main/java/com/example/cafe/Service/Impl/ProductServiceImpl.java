@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
@@ -29,10 +30,14 @@ public class ProductServiceImpl implements ProductService {
         try {
             if (jwtFilter.isAdmin()) {
                 if (validate(requestMap, false)) {
-                    productDao.save(getProductFromMap(requestMap, false));
-                    return ProjectUtils.getResponseEntity("Tạo mới sản phẩm thành công.", HttpStatus.OK);
+                    Product product = getProductFromMap(requestMap, false);
+                    // Gán giá trị createdDate trước khi lưu vào cơ sở dữ liệu
+                    product.setCreatedDate(new Date());
+                    productDao.save(product);
+                    return ProjectUtils.getResponseEntity("Thêm mới sản phẩm thành công.", HttpStatus.OK);
+                } else {
+                    return ProjectUtils.getResponseEntity(CafeConstants.INVALID_DATA, HttpStatus.BAD_REQUEST);
                 }
-                return ProjectUtils.getResponseEntity(CafeConstants.INVALID_DATA, HttpStatus.BAD_REQUEST);
             } else {
                 return ProjectUtils.getResponseEntity(CafeConstants.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
             }
@@ -41,6 +46,7 @@ public class ProductServiceImpl implements ProductService {
         }
         return ProjectUtils.getResponseEntity(CafeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
 
     @Override
     public ResponseEntity<List<ProductDTO>> getAllProduct() {

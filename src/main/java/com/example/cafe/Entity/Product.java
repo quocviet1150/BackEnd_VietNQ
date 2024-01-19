@@ -3,12 +3,14 @@ package com.example.cafe.Entity;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.NamedQuery;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 
 @NamedQuery(name = "Product.getAllProduct", query = "select new com.example.cafe.DTO.ProductDTO(p.id,p.name," +
-        "p.description,p.price,p.status,p.category.id,p.category.name) from Product p order by p.id desc")
+        "p.description,p.price,p.status,p.category.id,p.category.name,p.createdDate) from Product p order by p.id desc")
 @NamedQuery(name = "Product.updateStatus", query = "update Product p set p.status=:status where p.id=:id")
 
 @NamedQuery(name = "Product.getProductByCategory", query = "select new com.example.cafe.DTO.ProductDTO(p.id," +
@@ -39,6 +41,9 @@ public class Product implements Serializable {
 
     @Column(name = "description")
     private String description;
+
+    @Column(name = "created_date")
+    private Date createdDate;
 
     @Column(name = "price")
     private Integer price;
@@ -96,5 +101,13 @@ public class Product implements Serializable {
 
     public void setPrice(Integer price) {
         this.price = price;
+    }
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
     }
 }
