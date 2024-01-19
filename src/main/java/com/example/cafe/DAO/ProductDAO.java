@@ -4,6 +4,7 @@ import com.example.cafe.Entity.Product;
 import com.example.cafe.DTO.ProductDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import javax.transaction.Transactional;
@@ -20,4 +21,7 @@ public interface ProductDAO extends JpaRepository<Product, Integer> {
     List<ProductDTO> getProductByCategory(@Param("id") Integer id);
 
     ProductDTO getByIdProduct(@Param("id") Integer id);
+
+//    @Query("SELECT DAYOFMONTH(p.createdDate) AS date, COUNT(p.id) AS productCount FROM Product p GROUP BY DATE(p.createdDate)")
+//    List<Object[]> countProductsByDay();
 }

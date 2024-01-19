@@ -1,5 +1,6 @@
 package com.example.cafe.DAO;
 
+import com.example.cafe.DTO.ProductDTO;
 import com.example.cafe.Entity.User;
 import com.example.cafe.DTO.UserDTO;
 import org.springframework.data.jpa.repository.JpaRepository;

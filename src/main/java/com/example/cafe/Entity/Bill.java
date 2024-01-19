@@ -8,6 +8,7 @@ import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 
 @NamedQuery(name = "Bill.getAllBills", query = "select b from Bill b order by b.id desc ")
 
@@ -47,6 +48,9 @@ public class Bill implements Serializable {
 
     @Column(name = "createdby")
     private String createdBy;
+
+    @Column(name = "created_date")
+    private Date createdDate;
 
     public Bill() {
 
@@ -137,4 +141,12 @@ public class Bill implements Serializable {
     public void setProductDetails(String productDetails) {
         this.productDetails = productDetails;
     }
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
+
 }

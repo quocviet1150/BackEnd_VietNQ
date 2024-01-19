@@ -20,10 +20,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Stream;
 
 @Service
@@ -115,6 +113,7 @@ public class BillServiceImpl implements BillService {
             bill.setEmail((String) requestMap.get("email"));
             bill.setContactNumber((String) requestMap.get("contactNumber"));
             bill.setPaymentMethod((String) requestMap.get("paymentMethod"));
+            bill.setCreatedDate(new Date());
             bill.setTotal(Integer.parseInt((String) requestMap.get("totalAmount")));
             bill.setProductDetails((String) requestMap.get("productDetails"));
             bill.setCreatedBy(jwtFilter.getCurrentUser());
