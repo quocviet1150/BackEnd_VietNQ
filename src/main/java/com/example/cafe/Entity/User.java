@@ -6,11 +6,12 @@ import org.hibernate.annotations.NamedQuery;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 
 @NamedQuery(name = "User.findByUserNameId", query = "select u from User u where u.userName=:userName")
 
 @NamedQuery(name = "User.getAllUser", query = "SELECT new com.example.cafe.DTO.UserDTO(u.id, u.name," +
-        " u.userName, u.contactNumber,u.role, u.status) FROM User u WHERE u.role ='user' order by u.id desc ")
+        " u.userName, u.contactNumber,u.role, u.status,u.createdDate) FROM User u WHERE u.role ='user' order by u.id desc ")
 
 @NamedQuery(name = "User.getAllAdmin", query = "SELECT u.userName FROM User u WHERE u.role = 'admin'")
 
@@ -44,6 +45,9 @@ public class User implements Serializable {
 
     @Column(name = "password")
     private String password;
+
+    @Column(name = "created_date")
+    private Date createdDate;
 
     @Column(name = "status")
     private String status;
@@ -109,5 +113,13 @@ public class User implements Serializable {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
     }
 }

@@ -22,6 +22,5 @@ public interface ProductDAO extends JpaRepository<Product, Integer> {
 
     ProductDTO getByIdProduct(@Param("id") Integer id);
 
-//    @Query("SELECT DAYOFMONTH(p.createdDate) AS date, COUNT(p.id) AS productCount FROM Product p GROUP BY DATE(p.createdDate)")
-//    List<Object[]> countProductsByDay();
+    Integer getDateNowProduct();
 }

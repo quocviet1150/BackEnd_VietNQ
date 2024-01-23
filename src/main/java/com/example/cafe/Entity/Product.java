@@ -19,6 +19,10 @@ import java.util.Date;
 @NamedQuery(name = "Product.getByIdProduct", query = "select new com.example.cafe.DTO.ProductDTO(p.id,p.name," +
         "p.description,p.price) from Product p WHERE p.id=:id order by p.id desc")
 
+@NamedQuery(name = "Product.getDateNowProduct",query = "SELECT COUNT(p.id) AS totalOrders\n" +
+        "FROM Product p\n" +
+        "WHERE DATE(p.createdDate) = CURRENT_DATE ")
+
 @Entity
 @DynamicUpdate
 @DynamicInsert

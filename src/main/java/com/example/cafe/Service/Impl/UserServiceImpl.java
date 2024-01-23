@@ -54,6 +54,7 @@ public class UserServiceImpl implements UserService {
 
                 User user = userDao.findByUserNameId(requestMap.get("userName"));
                 if (Objects.isNull(user)) {
+                    user.setCreatedDate(new Date());
                     userDao.save(getUserFromMap(requestMap));
                     return ProjectUtils.getResponseEntity("Đăng ký tài khoản thành công.", HttpStatus.OK);
                 } else {

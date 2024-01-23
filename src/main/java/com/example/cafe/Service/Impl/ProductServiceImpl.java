@@ -31,7 +31,6 @@ public class ProductServiceImpl implements ProductService {
             if (jwtFilter.isAdmin()) {
                 if (validate(requestMap, false)) {
                     Product product = getProductFromMap(requestMap, false);
-                    // Gán giá trị createdDate trước khi lưu vào cơ sở dữ liệu
                     product.setCreatedDate(new Date());
                     productDao.save(product);
                     return ProjectUtils.getResponseEntity("Thêm mới sản phẩm thành công.", HttpStatus.OK);

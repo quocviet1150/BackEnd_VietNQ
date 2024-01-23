@@ -23,6 +23,12 @@ public class ProjectUtils {
 
     }
 
+    public static ResponseEntity<Map<String, Object>> getResponseEntityMap(String responseMessage, HttpStatus httpStatus) {
+        Map<String, Object> responseBody = new HashMap<>();
+        responseBody.put("message", responseMessage);
+        return new ResponseEntity<>(responseBody, httpStatus);
+    }
+
     public static ResponseEntity<String> getResponseEntity(String responseMessage, HttpStatus httpStatus) {
         return new ResponseEntity<>("{\"message\":\"" + responseMessage + "\"}", httpStatus);
     }
