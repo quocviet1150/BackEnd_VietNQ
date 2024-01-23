@@ -15,4 +15,7 @@ public interface BillDAO extends JpaRepository<Bill, Integer> {
     Integer sumBill();
 
     Integer getOne();
+
+    Integer sumBillByDate();
+
 }

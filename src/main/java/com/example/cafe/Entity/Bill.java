@@ -20,6 +20,9 @@ import java.util.Date;
         "FROM Bill b\n" +
         "WHERE DATE(b.createdDate) = CURRENT_DATE ")
 
+@NamedQuery(name = "Bill.sumBillByDate", query = "SELECT SUM(b.total) FROM Bill b WHERE DATE(b.createdDate) = CURRENT_DATE")
+
+
 @Entity
 @DynamicUpdate
 @DynamicInsert

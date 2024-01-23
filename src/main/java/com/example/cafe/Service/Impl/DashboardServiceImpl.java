@@ -11,7 +11,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -42,15 +44,29 @@ public class DashboardServiceImpl implements DashboardService {
     public ResponseEntity<Map<String, Object>> getCount() {
         if (jwtFilter.isAdmin()) {
             Map<String, Object> map = new HashMap<>();
-            map.put("category", categoryDao.count());
-            map.put("product", productDao.count());
-            map.put("bill", billDao.count());
-            map.put("billSum", billDao.sumBill());
-            map.put("getOne", billDao.getOne());
-            map.put("getDateNowProduct", productDao.getDateNowProduct());
-            map.put("user", userDao.countByRole("user"));
-            map.put("image", imageDao.count());
-            map.put("counts", loginCounter.getLoginCount());
+//            map.put("category", categoryDao.count());
+//            map.put("product", productDao.count());
+//            map.put("bill", billDao.count());
+//            map.put("billSum", billDao.sumBill());
+//            map.put("getOne", billDao.getOne());
+//            map.put("getDateNowProduct", productDao.getDateNowProduct());
+//            map.put("user", userDao.countByRole("user"));
+//            map.put("image", imageDao.count());
+//            map.put("counts", loginCounter.getLoginCount());
+
+            List<String> months = Arrays.asList("category", "product", "bill", "getDateNowProduct", "user", "image", "counts");
+            List<List<String>> salesData = Arrays.asList(
+                    Arrays.asList(
+                    String.valueOf(categoryDao.count()),
+                    String.valueOf(productDao.count()),
+                    String.valueOf(billDao.count()),
+                    String.valueOf(productDao.getDateNowProduct()),
+                    String.valueOf(userDao.countByRole("user")),
+                    String.valueOf(imageDao.count()),
+                    String.valueOf(loginCounter.getLoginCount())));
+
+            map.put("barchart", Arrays.asList(months, salesData));
+
             return new ResponseEntity<>(map, HttpStatus.OK);
         } else {
             return ProjectUtils.getResponseEntityMap(CafeConstants.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
