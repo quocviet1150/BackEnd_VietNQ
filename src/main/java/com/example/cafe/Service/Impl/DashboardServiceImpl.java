@@ -1,5 +1,6 @@
 package com.example.cafe.Service.Impl;
 
+import com.example.cafe.Component.LoginCounter;
 import com.example.cafe.Config.JwtFilter;
 import com.example.cafe.Constants.CafeConstants;
 import com.example.cafe.DAO.*;
@@ -34,6 +35,8 @@ public class DashboardServiceImpl implements DashboardService {
     @Autowired
     JwtFilter jwtFilter;
 
+    @Autowired
+    LoginCounter loginCounter;
 
     @Override
     public ResponseEntity<Map<String, Object>> getCount() {
@@ -47,9 +50,17 @@ public class DashboardServiceImpl implements DashboardService {
             map.put("getDateNowProduct", productDao.getDateNowProduct());
             map.put("user", userDao.countByRole("user"));
             map.put("image", imageDao.count());
+            map.put("counts", loginCounter.getLoginCount());
             return new ResponseEntity<>(map, HttpStatus.OK);
         } else {
             return ProjectUtils.getResponseEntityMap(CafeConstants.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
         }
+    }
+
+    @Override
+    public ResponseEntity<Map<String, Object>> getCounts() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("product", productDao.count());
+        return new ResponseEntity<>(map, HttpStatus.OK);
     }
 }

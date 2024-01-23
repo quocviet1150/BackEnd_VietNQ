@@ -8,5 +8,6 @@ import java.util.Map;
 public interface DashboardService {
 
     ResponseEntity<Map<String, Object>> getCount();
+    ResponseEntity<Map<String, Object>> getCounts();
 
 }

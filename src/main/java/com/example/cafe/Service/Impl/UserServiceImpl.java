@@ -1,5 +1,6 @@
 package com.example.cafe.Service.Impl;
 
+import com.example.cafe.Component.LoginCounter;
 import com.example.cafe.Config.CustomerUserDetailsService;
 import com.example.cafe.Config.JwtFilter;
 import com.example.cafe.Config.JwtUtil;
@@ -42,6 +43,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     EmailUtils emailUtils;
+
+    @Autowired
+    LoginCounter loginCounter;
 
     private static final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
 
@@ -98,6 +102,7 @@ public class UserServiceImpl implements UserService {
                     new UsernamePasswordAuthenticationToken(requestMap.get("userName"), requestMap.get("password"))
             );
             if (auth.isAuthenticated()) {
+                loginCounter.incrementLoginCount();
                 if (customerUserDetailsService.getUserDetail().getStatus().equalsIgnoreCase("true")) {
                     return new ResponseEntity<>("{\"token\":\"" +
                             jwtUtil.generateToken(customerUserDetailsService.getUserDetail().getUserName(),

@@ -25,4 +25,5 @@ public interface UserService {
     ResponseEntity<String> deleteUser(Integer userId);
 
     ResponseEntity<String> updateDecentralization(Map<String, String> requestMap);
+
 }

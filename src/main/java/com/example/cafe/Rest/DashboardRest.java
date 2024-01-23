@@ -11,4 +11,7 @@ public interface DashboardRest {
 
     @GetMapping(path = "/details")
     ResponseEntity<Map<String, Object>> getCount();
+
+    @GetMapping(path = "/detail")
+    ResponseEntity<Map<String, Object>> getCounts();
 }

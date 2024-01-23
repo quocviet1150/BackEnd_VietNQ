@@ -18,4 +18,9 @@ public class DashboardRestImpl implements DashboardRest {
     public ResponseEntity<Map<String, Object>> getCount() {
         return dashboardService.getCount();
     }
+
+    @Override
+    public ResponseEntity<Map<String, Object>> getCounts() {
+        return dashboardService.getCounts();
+    }
 }
