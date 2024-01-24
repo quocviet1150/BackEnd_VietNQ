@@ -21,4 +21,8 @@ public interface ProductService {
 
     ResponseEntity<ProductDTO> getByIdProduct(Integer id);
 
+    ResponseEntity<String> decrementProductQuantity(Integer id, Integer quantity);
+
+    ResponseEntity<String> incrementProductQuantity(Integer id, Integer quantity);
+
 }

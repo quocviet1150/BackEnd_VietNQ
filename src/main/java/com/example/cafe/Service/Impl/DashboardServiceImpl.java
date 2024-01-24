@@ -47,14 +47,14 @@ public class DashboardServiceImpl implements DashboardService {
 //            map.put("category", categoryDao.count());
 //            map.put("product", productDao.count());
 //            map.put("bill", billDao.count());
-//            map.put("billSum", billDao.sumBill());
-//            map.put("getOne", billDao.getOne());
+            map.put("billSum", billDao.sumBill());
+            map.put("getOne", billDao.getOne());
 //            map.put("getDateNowProduct", productDao.getDateNowProduct());
 //            map.put("user", userDao.countByRole("user"));
 //            map.put("image", imageDao.count());
 //            map.put("counts", loginCounter.getLoginCount());
 
-            List<String> months = Arrays.asList("category", "product", "bill", "getDateNowProduct", "user", "image", "counts");
+            List<String> months = Arrays.asList("Loại sản phẩm", "Sản phẩm", "Hóa đơn", "Sản phẩm nhập trong ngày", "Số người dùng", "Số bài viết", "Số lượng người đăng nhập");
             List<List<String>> salesData = Arrays.asList(
                     Arrays.asList(
                     String.valueOf(categoryDao.count()),

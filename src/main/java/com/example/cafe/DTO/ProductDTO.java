@@ -13,11 +13,13 @@ public class ProductDTO {
     Integer categoryId;
     String categoryName;
 
+    String quantity_product;
+
     public ProductDTO() {
 
     }
 
-    public ProductDTO(Integer id, String name, String description, Integer price, String status, Integer categoryId, String categoryName, Date createdDate) {
+    public ProductDTO(Integer id, String name, String description, Integer price, String status, Integer categoryId, String categoryName, Date createdDate,String quantity_product) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -26,6 +28,7 @@ public class ProductDTO {
         this.categoryId = categoryId;
         this.categoryName = categoryName;
         this.createdDate = createdDate;
+        this.quantity_product = quantity_product;
     }
 
     public ProductDTO(Integer id, String name) {
@@ -102,5 +105,13 @@ public class ProductDTO {
 
     public void setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
+    }
+
+    public String getQuantity_product() {
+        return quantity_product;
+    }
+
+    public void setQuantity_product(String quantity_product) {
+        this.quantity_product = quantity_product;
     }
 }

@@ -10,7 +10,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 @NamedQuery(name = "Product.getAllProduct", query = "select new com.example.cafe.DTO.ProductDTO(p.id,p.name," +
-        "p.description,p.price,p.status,p.category.id,p.category.name,p.createdDate) from Product p order by p.id desc")
+        "p.description,p.price,p.status,p.category.id,p.category.name,p.createdDate, p.quantity_product) from Product p order by p.id desc")
 @NamedQuery(name = "Product.updateStatus", query = "update Product p set p.status=:status where p.id=:id")
 
 @NamedQuery(name = "Product.getProductByCategory", query = "select new com.example.cafe.DTO.ProductDTO(p.id," +
@@ -54,6 +54,9 @@ public class Product implements Serializable {
 
     @Column(name = "status")
     private String status;
+
+    @Column(name = "quantity_product")
+    private String quantity_product;
 
     public Product() {
 
@@ -113,5 +116,13 @@ public class Product implements Serializable {
 
     public void setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
+    }
+
+    public String getQuantity_product() {
+        return quantity_product;
+    }
+
+    public void setQuantity_product(String quantity_product) {
+        this.quantity_product = quantity_product;
     }
 }

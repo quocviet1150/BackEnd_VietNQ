@@ -167,9 +167,50 @@ public class ProductServiceImpl implements ProductService {
         product.setCategory(category);
         product.setName(requestMap.get("name"));
         product.setDescription(requestMap.get("description"));
+        product.setQuantity_product(requestMap.get("quantity_product"));
         product.setPrice(Integer.parseInt(requestMap.get("price")));
 
         return product;
+    }
+
+    public ResponseEntity<String> decrementProductQuantity(Integer id, Integer quantity) {
+        if (id != null && quantity != null) {
+            Product product = productDao.findById(id).orElse(null);
+
+            if (product != null && product.getQuantity_product() != null) {
+                int currentQuantity = Integer.parseInt(product.getQuantity_product());
+
+                if (currentQuantity >= quantity) {
+                    int newQuantity = currentQuantity - quantity;
+                    product.setQuantity_product(String.valueOf(newQuantity));
+                    productDao.save(product);
+                    return ProjectUtils.getResponseEntity("Số lượng sản phẩm đã được cập nhât thành công.", HttpStatus.OK);
+                } else {
+                    return ResponseEntity.badRequest().body("Số lượng không đủ");
+                }
+            } else {
+                return ResponseEntity.badRequest().body("Không tìm thấy sản phẩm hoặc số lượng chưa khởi tạo");
+            }
+        } else {
+            return ResponseEntity.badRequest().body("ProductId hoặc Quantity không được null");
+        }
+    }
+
+    public ResponseEntity<String> incrementProductQuantity(Integer id, Integer quantity) {
+        try {
+            Optional<Product> optionalProduct = productDao.findById(id);
+
+            if (optionalProduct.isPresent()) {
+                Product product = optionalProduct.get();
+                int currentQuantity = Integer.parseInt(product.getQuantity_product());
+                product.setQuantity_product(String.valueOf(currentQuantity + quantity));
+                productDao.save(product);
+            }
+            return ProjectUtils.getResponseEntity("Reset sản phẩm thành công.", HttpStatus.OK);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return ProjectUtils.getResponseEntity(CafeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 }

@@ -89,4 +89,24 @@ public class ProductRestImpl implements ProductRest {
         }
         return new ResponseEntity<ProductDTO>(new ProductDTO(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    @Override
+    public ResponseEntity<String> decrementProductQuantity(Integer id, Integer quantity) {
+        try {
+            return productService.decrementProductQuantity(id,quantity);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return ProjectUtils.getResponseEntity(CafeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @Override
+    public ResponseEntity<String> incrementProductQuantity(Integer id, Integer quantity) {
+        try {
+            return productService.incrementProductQuantity(id,quantity);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return ProjectUtils.getResponseEntity(CafeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 }
