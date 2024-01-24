@@ -91,6 +91,7 @@ public class BillServiceImpl implements BillService {
         table.addCell((String) data.get("name"));
         table.addCell((String) data.get("category"));
         table.addCell((String) data.get("quantity"));
+        table.addCell((String) data.get("description"));
         table.addCell(Double.toString((Double) data.get("price")));
         table.addCell(Double.toString((Double) data.get("total")));
     }
@@ -154,7 +155,7 @@ public class BillServiceImpl implements BillService {
 
     private void createTableHeader(PdfPTable table) {
         log.info("Inside header");
-        Stream.of("Name", "Category", "Quantity", "Price", "Sub total")
+        Stream.of("Name", "Category", "Quantity", "Description","Price", "Sub total")
                 .forEach(columnTitle -> {
                     PdfPCell header = new PdfPCell();
                     header.setBackgroundColor(BaseColor.LIGHT_GRAY);
