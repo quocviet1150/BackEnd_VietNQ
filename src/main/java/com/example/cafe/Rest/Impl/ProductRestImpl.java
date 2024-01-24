@@ -109,4 +109,14 @@ public class ProductRestImpl implements ProductRest {
         }
         return ProjectUtils.getResponseEntity(CafeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    @Override
+    public ResponseEntity<List<List<String>>> getProductByQuantity() {
+        try {
+            return productService.getProductByQuantity();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return new ResponseEntity<List<List<String>>>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 }

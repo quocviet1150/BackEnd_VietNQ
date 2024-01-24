@@ -25,4 +25,6 @@ public interface ProductService {
 
     ResponseEntity<String> incrementProductQuantity(Integer id, Integer quantity);
 
+    ResponseEntity<List<List<String>>> getProductByQuantity();
+
 }

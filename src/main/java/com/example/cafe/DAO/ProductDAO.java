@@ -23,4 +23,7 @@ public interface ProductDAO extends JpaRepository<Product, Integer> {
     ProductDTO getByIdProduct(@Param("id") Integer id);
 
     Integer getDateNowProduct();
+
+    List<ProductDTO> getProductByQuantity();
+
 }

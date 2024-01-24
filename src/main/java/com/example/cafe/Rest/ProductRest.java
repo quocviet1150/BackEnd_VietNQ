@@ -37,4 +37,7 @@ public interface ProductRest {
     @PostMapping(path = "/{id}/increment_quantity/{quantity}")
     ResponseEntity<String> incrementProductQuantity(@PathVariable Integer id, @PathVariable Integer quantity);
 
+    @GetMapping(path = "get_product_by_quantity")
+    ResponseEntity<List<List<String>>> getProductByQuantity();
+
 }

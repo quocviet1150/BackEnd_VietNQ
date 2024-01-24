@@ -1,6 +1,9 @@
 package com.example.cafe.DTO;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class ProductDTO {
 
@@ -14,6 +17,9 @@ public class ProductDTO {
     String categoryName;
 
     String quantity_product;
+
+    private List<List<String>> temporaryChartData;
+
 
     public ProductDTO() {
 
@@ -34,6 +40,13 @@ public class ProductDTO {
     public ProductDTO(Integer id, String name) {
         this.id = id;
         this.name = name;
+
+    }
+
+    public ProductDTO(Integer id, String name, String quantity_product) {
+        this.id = id;
+        this.name = name;
+        this.quantity_product = quantity_product;
     }
 
     public ProductDTO(Integer id, String name, String description, Integer price) {
@@ -113,5 +126,13 @@ public class ProductDTO {
 
     public void setQuantity_product(String quantity_product) {
         this.quantity_product = quantity_product;
+    }
+
+    public List<List<String>> getTemporaryChartData() {
+        return temporaryChartData;
+    }
+
+    public void setTemporaryChartData(List<List<String>> temporaryChartData) {
+        this.temporaryChartData = temporaryChartData;
     }
 }

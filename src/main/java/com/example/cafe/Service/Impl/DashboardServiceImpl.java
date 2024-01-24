@@ -44,26 +44,18 @@ public class DashboardServiceImpl implements DashboardService {
     public ResponseEntity<Map<String, Object>> getCount() {
         if (jwtFilter.isAdmin()) {
             Map<String, Object> map = new HashMap<>();
-//            map.put("category", categoryDao.count());
-//            map.put("product", productDao.count());
-//            map.put("bill", billDao.count());
             map.put("billSum", billDao.sumBill());
             map.put("getOne", billDao.getOne());
-//            map.put("getDateNowProduct", productDao.getDateNowProduct());
-//            map.put("user", userDao.countByRole("user"));
-//            map.put("image", imageDao.count());
-//            map.put("counts", loginCounter.getLoginCount());
-
             List<String> months = Arrays.asList("Loại sản phẩm", "Sản phẩm", "Hóa đơn", "Sản phẩm nhập trong ngày", "Số người dùng", "Số bài viết", "Số lượng người đăng nhập");
             List<List<String>> salesData = Arrays.asList(
                     Arrays.asList(
-                    String.valueOf(categoryDao.count()),
-                    String.valueOf(productDao.count()),
-                    String.valueOf(billDao.count()),
-                    String.valueOf(productDao.getDateNowProduct()),
-                    String.valueOf(userDao.countByRole("user")),
-                    String.valueOf(imageDao.count()),
-                    String.valueOf(loginCounter.getLoginCount())));
+                            String.valueOf(categoryDao.count()),
+                            String.valueOf(productDao.count()),
+                            String.valueOf(billDao.count()),
+                            String.valueOf(productDao.getDateNowProduct()),
+                            String.valueOf(userDao.countByRole("user")),
+                            String.valueOf(imageDao.count()),
+                            String.valueOf(loginCounter.getLoginCount())));
 
             map.put("barchart", Arrays.asList(months, salesData));
 

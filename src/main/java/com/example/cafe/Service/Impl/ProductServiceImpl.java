@@ -213,4 +213,32 @@ public class ProductServiceImpl implements ProductService {
         return ProjectUtils.getResponseEntity(CafeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    @Override
+    public ResponseEntity<List<List<String>>> getProductByQuantity() {
+        try {
+            List<ProductDTO> productDTOList = productDao.getProductByQuantity();
+            List<List<String>> finalChartDataList = new ArrayList<>();
+            List<String> productNames = new ArrayList<>();
+            List<String> quantities = new ArrayList<>();
+
+            for (ProductDTO productDTO : productDTOList) {
+                String productName = productDTO.getName();
+                String quantity = productDTO.getQuantity_product();
+                productNames.add(productName);
+                quantities.add(quantity);
+            }
+
+            List<String> dataRow = new ArrayList<>(productNames);
+            List<String> dataColumn = new ArrayList<>(quantities);
+
+            finalChartDataList.add(dataRow);
+            finalChartDataList.add(dataColumn);
+
+            return new ResponseEntity<>(finalChartDataList, HttpStatus.OK);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }

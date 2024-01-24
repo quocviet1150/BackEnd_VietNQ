@@ -16,6 +16,9 @@ import java.util.Date;
 @NamedQuery(name = "Product.getProductByCategory", query = "select new com.example.cafe.DTO.ProductDTO(p.id," +
         " p.name) from  Product  p where p.category.id=:id and p.status='true' order by p.id desc")
 
+@NamedQuery(name = "Product.getProductByQuantity", query = "select new com.example.cafe.DTO.ProductDTO(p.id," +
+        " p.name , p.quantity_product) from  Product  p  order by p.id desc")
+
 @NamedQuery(name = "Product.getByIdProduct", query = "select new com.example.cafe.DTO.ProductDTO(p.id,p.name," +
         "p.description,p.price) from Product p WHERE p.id=:id order by p.id desc")
 
