@@ -63,7 +63,7 @@ public class BillServiceImpl implements BillService {
                 Paragraph paragraph = new Paragraph(data + "\n \n", getFont("Data"));
                 document.add(paragraph);
 
-                PdfPTable table = new PdfPTable(5);
+                PdfPTable table = new PdfPTable(6);
                 table.setWidthPercentage(100);
                 createTableHeader(table);
 
