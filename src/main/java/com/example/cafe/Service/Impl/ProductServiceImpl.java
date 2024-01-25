@@ -66,6 +66,7 @@ public class ProductServiceImpl implements ProductService {
                     if (!optional.isEmpty()) {
                         Product product = getProductFromMap(requestMap, true);
                         product.setStatus(optional.get().getStatus());
+                        product.setCreatedDate(new Date());
                         productDao.save(product);
                         return ProjectUtils.getResponseEntity("Cập nhật sản phẩm thành công.", HttpStatus.OK);
                     } else {
@@ -183,6 +184,7 @@ public class ProductServiceImpl implements ProductService {
                 if (currentQuantity >= quantity) {
                     int newQuantity = currentQuantity - quantity;
                     product.setQuantity_product(newQuantity);
+                    product.setCreatedDate(new Date());
                     productDao.save(product);
                     return ProjectUtils.getResponseEntity("Số lượng sản phẩm đã được cập nhât thành công.", HttpStatus.OK);
                 } else {
@@ -204,6 +206,7 @@ public class ProductServiceImpl implements ProductService {
                 Product product = optionalProduct.get();
                 int currentQuantity = product.getQuantity_product();
                 product.setQuantity_product(currentQuantity + quantity);
+                product.setCreatedDate(new Date());
                 productDao.save(product);
             }
             return ProjectUtils.getResponseEntity("Reset sản phẩm thành công.", HttpStatus.OK);
