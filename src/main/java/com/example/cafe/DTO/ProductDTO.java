@@ -13,6 +13,7 @@ public class ProductDTO {
     Integer price;
     String status;
     Date createdDate;
+    Date updateDate;
     Integer categoryId;
     String categoryName;
 
@@ -25,7 +26,7 @@ public class ProductDTO {
 
     }
 
-    public ProductDTO(Integer id, String name, String description, Integer price, String status, Integer categoryId, String categoryName, Date createdDate,Integer quantity_product) {
+    public ProductDTO(Integer id, String name, String description, Integer price, String status, Integer categoryId, String categoryName, Date createdDate, Date updateDate,Integer quantity_product) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -34,6 +35,7 @@ public class ProductDTO {
         this.categoryId = categoryId;
         this.categoryName = categoryName;
         this.createdDate = createdDate;
+        this.updateDate = updateDate;
         this.quantity_product = quantity_product;
     }
 
@@ -134,5 +136,13 @@ public class ProductDTO {
 
     public void setTemporaryChartData(List<List<String>> temporaryChartData) {
         this.temporaryChartData = temporaryChartData;
+    }
+
+    public Date getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
     }
 }
