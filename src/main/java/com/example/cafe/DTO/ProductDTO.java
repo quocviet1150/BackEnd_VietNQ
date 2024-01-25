@@ -16,7 +16,7 @@ public class ProductDTO {
     Integer categoryId;
     String categoryName;
 
-    String quantity_product;
+    Integer quantity_product;
 
     private List<List<String>> temporaryChartData;
 
@@ -25,7 +25,7 @@ public class ProductDTO {
 
     }
 
-    public ProductDTO(Integer id, String name, String description, Integer price, String status, Integer categoryId, String categoryName, Date createdDate,String quantity_product) {
+    public ProductDTO(Integer id, String name, String description, Integer price, String status, Integer categoryId, String categoryName, Date createdDate,Integer quantity_product) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -43,7 +43,7 @@ public class ProductDTO {
 
     }
 
-    public ProductDTO(Integer id, String name, String quantity_product) {
+    public ProductDTO(Integer id, String name, Integer quantity_product) {
         this.id = id;
         this.name = name;
         this.quantity_product = quantity_product;
@@ -120,11 +120,11 @@ public class ProductDTO {
         this.createdDate = createdDate;
     }
 
-    public String getQuantity_product() {
+    public Integer getQuantity_product() {
         return quantity_product;
     }
 
-    public void setQuantity_product(String quantity_product) {
+    public void setQuantity_product(Integer quantity_product) {
         this.quantity_product = quantity_product;
     }
 

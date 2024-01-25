@@ -48,8 +48,8 @@ public class BillServiceImpl implements BillService {
                     requestMap.put("uuid", fileName);
                     insertBill(requestMap);
                 }
-                String data = "Name: " + requestMap.get("name") + "\n" + "Email: " + requestMap.get("email") + "\n" + "ContactNumber: " + requestMap.get("contactNumber")
-                        + "\n" + "PaymentMethod: " + requestMap.get("paymentMethod");
+                String data = "Name:  " + requestMap.get("name") + "\n" + "Email:  " + requestMap.get("email") + "\n" + "ContactNumber:  " + requestMap.get("contactNumber")
+                        + "\n" + "PaymentMethod:  " + requestMap.get("paymentMethod");
                 Document document = new Document();
                 PdfWriter.getInstance(document, new FileOutputStream(CafeConstants.STORE_LOCATION + "\\" + fileName + ".pdf"));
 
@@ -57,7 +57,7 @@ public class BillServiceImpl implements BillService {
                 setRectangleInPdf(document);
 
                 Paragraph chuck = new Paragraph("Management System", getFont("Header"));
-                chuck.setAlignment(Element.ALIGN_BASELINE);
+                chuck.setAlignment(Element.ALIGN_CENTER);
                 document.add(chuck);
 
                 Paragraph paragraph = new Paragraph(data + "\n \n", getFont("Data"));
@@ -73,8 +73,12 @@ public class BillServiceImpl implements BillService {
                 }
                 document.add(table);
 
-                Paragraph footer = new Paragraph("Total: " + requestMap.get("totalAmount") + "\n" +
-                        "Thank you for visiting. Please visit again!!", getFont("Data"));
+                Paragraph total = new Paragraph("Total: " + requestMap.get("totalAmount") ,
+                        getFont("Data"));
+                document.add(total);
+                Paragraph footer = new Paragraph("Thank you for visiting. Please visit again!!",
+                        getFont("Data"));
+                footer.setAlignment(Element.ALIGN_RIGHT);
                 document.add(footer);
                 document.close();
                 return new ResponseEntity<>("{\"uuid\" :\"" + fileName + "\"}", HttpStatus.OK);
@@ -146,7 +150,7 @@ public class BillServiceImpl implements BillService {
                 return headerFont;
             case "Data":
                 Font dataFont = FontFactory.getFont(FontFactory.TIMES_ROMAN, 11, BaseColor.BLACK);
-                dataFont.setStyle(Font.BOLD);
+                dataFont.setStyle(Font.NORMAL);
                 return dataFont;
             default:
                 return new Font();

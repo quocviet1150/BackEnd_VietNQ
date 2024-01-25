@@ -167,7 +167,7 @@ public class ProductServiceImpl implements ProductService {
         product.setCategory(category);
         product.setName(requestMap.get("name"));
         product.setDescription(requestMap.get("description"));
-        product.setQuantity_product(requestMap.get("quantity_product"));
+        product.setQuantity_product(Integer.parseInt(requestMap.get("quantity_product")));
         product.setPrice(Integer.parseInt(requestMap.get("price")));
 
         return product;
@@ -178,11 +178,11 @@ public class ProductServiceImpl implements ProductService {
             Product product = productDao.findById(id).orElse(null);
 
             if (product != null && product.getQuantity_product() != null) {
-                int currentQuantity = Integer.parseInt(product.getQuantity_product());
+                int currentQuantity = product.getQuantity_product();
 
                 if (currentQuantity >= quantity) {
                     int newQuantity = currentQuantity - quantity;
-                    product.setQuantity_product(String.valueOf(newQuantity));
+                    product.setQuantity_product(newQuantity);
                     productDao.save(product);
                     return ProjectUtils.getResponseEntity("Số lượng sản phẩm đã được cập nhât thành công.", HttpStatus.OK);
                 } else {
@@ -202,8 +202,8 @@ public class ProductServiceImpl implements ProductService {
 
             if (optionalProduct.isPresent()) {
                 Product product = optionalProduct.get();
-                int currentQuantity = Integer.parseInt(product.getQuantity_product());
-                product.setQuantity_product(String.valueOf(currentQuantity + quantity));
+                int currentQuantity = product.getQuantity_product();
+                product.setQuantity_product(currentQuantity + quantity);
                 productDao.save(product);
             }
             return ProjectUtils.getResponseEntity("Reset sản phẩm thành công.", HttpStatus.OK);
@@ -223,7 +223,7 @@ public class ProductServiceImpl implements ProductService {
 
             for (ProductDTO productDTO : productDTOList) {
                 String productName = productDTO.getName();
-                String quantity = productDTO.getQuantity_product();
+                String quantity = String.valueOf(productDTO.getQuantity_product());
                 productNames.add(productName);
                 quantities.add(quantity);
             }
