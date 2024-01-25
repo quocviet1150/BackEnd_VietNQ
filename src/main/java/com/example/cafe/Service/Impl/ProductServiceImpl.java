@@ -67,6 +67,7 @@ public class ProductServiceImpl implements ProductService {
                     if (!optional.isEmpty()) {
                         Product product = getProductFromMap(requestMap, true);
                         product.setStatus(optional.get().getStatus());
+                        product.setCreatedDate(optional.get().getCreatedDate());
                         product.setUpdateDate(new Date());
                         productDao.save(product);
                         return ProjectUtils.getResponseEntity("Cập nhật sản phẩm thành công.", HttpStatus.OK);
