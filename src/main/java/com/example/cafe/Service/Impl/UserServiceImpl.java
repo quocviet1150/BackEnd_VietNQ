@@ -27,6 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.*;
 
@@ -292,7 +293,12 @@ public class UserServiceImpl implements UserService {
     public ResponseEntity<String> updateUser(Integer id, MultipartFile file) {
         try {
             String originalFilename = Objects.requireNonNull(file.getOriginalFilename());
-            Path imagePath = Path.of(uploadPath, originalFilename);
+            Path userFolderPath = Paths.get(uploadPath, String.valueOf(id));
+            if (!Files.exists(userFolderPath)) {
+                Files.createDirectories(userFolderPath);
+            }
+
+            Path imagePath = userFolderPath.resolve(originalFilename);
 
             if (Files.exists(imagePath)) {
                 return ProjectUtils.getResponseEntity("File đã tồn tại. Không thể upload trùng lặp.", HttpStatus.BAD_REQUEST);
@@ -324,6 +330,7 @@ public class UserServiceImpl implements UserService {
             return ProjectUtils.getResponseEntity(CafeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
 
 
     private void updateUserDetails(User user, String name, String contactNumber) {
