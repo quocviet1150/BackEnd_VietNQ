@@ -14,6 +14,7 @@ import com.example.cafe.DTO.UserDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -22,7 +23,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.*;
 
 @Service
@@ -49,6 +54,8 @@ public class UserServiceImpl implements UserService {
     @Autowired
     LoginCounter loginCounter;
 
+    @Value("${upload.path}")
+    private String uploadPath;
     private static final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
 
     @Override
@@ -268,7 +275,7 @@ public class UserServiceImpl implements UserService {
                         String name = requestMap.get("name");
                         String contactNumber = requestMap.get("contactNumber");
                         updateUserDetails(currentUser, name, contactNumber);
-                        return ResponseEntity.ok("User details updated successfully.");
+                        return ResponseEntity.ok("Chi tiết người dùng được cập nhật thành công.");
                     } else {
                         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found.");
                     }
@@ -280,6 +287,44 @@ public class UserServiceImpl implements UserService {
             return ProjectUtils.getResponseEntity(CafeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @Override
+    public ResponseEntity<String> updateUser(Integer id, MultipartFile file) {
+        try {
+            String originalFilename = Objects.requireNonNull(file.getOriginalFilename());
+            Path imagePath = Path.of(uploadPath, originalFilename);
+
+            if (Files.exists(imagePath)) {
+                return ProjectUtils.getResponseEntity("File đã tồn tại. Không thể upload trùng lặp.", HttpStatus.BAD_REQUEST);
+            }
+
+            Files.copy(file.getInputStream(), imagePath, StandardCopyOption.REPLACE_EXISTING);
+
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            if (authentication != null) {
+                Object principal = authentication.getPrincipal();
+                if (principal instanceof UserDetails) {
+                    UserDetails userDetails = (UserDetails) principal;
+                    String username = userDetails.getUsername();
+
+                    User currentUser = userDao.findByUserName(username);
+                    if (currentUser != null) {
+                        currentUser.setImagePath(imagePath.toString());
+                        currentUser.setFileName(originalFilename);
+                        userDao.save(currentUser);
+                        return ResponseEntity.ok("User updated successfully.");
+                    } else {
+                        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found.");
+                    }
+                }
+            }
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized access.");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return ProjectUtils.getResponseEntity(CafeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 
     private void updateUserDetails(User user, String name, String contactNumber) {
         if (name != null && !name.isEmpty()) {

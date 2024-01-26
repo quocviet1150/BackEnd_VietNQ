@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -119,6 +120,16 @@ public class UserRestImpl implements UserRest {
     public ResponseEntity<String> updateUserDetails(Integer id, Map<String, String> requestMap) {
         try {
             return userService.updateUserDetails(id, requestMap);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return ProjectUtils.getResponseEntity(CafeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @Override
+    public ResponseEntity<String> updateUser(Integer id, MultipartFile file) {
+        try {
+            return userService.updateUser(id, file);
         } catch (Exception ex) {
             ex.printStackTrace();
         }

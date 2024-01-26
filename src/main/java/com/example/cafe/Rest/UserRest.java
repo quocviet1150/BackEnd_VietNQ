@@ -3,6 +3,7 @@ package com.example.cafe.Rest;
 import com.example.cafe.DTO.UserDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
@@ -42,5 +43,8 @@ public interface UserRest {
 
     @PostMapping("/update_information/{id}")
     ResponseEntity<String> updateUserDetails(@PathVariable("id") Integer id, @RequestBody(required = true) Map<String, String> requestMap);
+
+    @PostMapping("/update_image/{id}")
+    ResponseEntity<String> updateUser(@PathVariable("id") Integer id,  @RequestParam MultipartFile file);
 
 }

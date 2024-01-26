@@ -54,6 +54,12 @@ public class User implements Serializable {
 
     @Column(name = "role")
     private String role;
+    @Column(name = "imagePath")
+    private String imagePath;
+
+    @Column(name = "fileName")
+    private String fileName;
+
 
     public User() {
 
@@ -121,5 +127,21 @@ public class User implements Serializable {
 
     public void setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 }

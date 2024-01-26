@@ -2,6 +2,7 @@ package com.example.cafe.Service;
 
 import com.example.cafe.DTO.UserDTO;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
@@ -27,5 +28,7 @@ public interface UserService {
     ResponseEntity<String> updateDecentralization(Map<String, String> requestMap);
 
     ResponseEntity<String> updateUserDetails(Integer id, Map<String, String> requestMap);
+
+    ResponseEntity<String> updateUser(Integer id,  MultipartFile file);
 
 }
