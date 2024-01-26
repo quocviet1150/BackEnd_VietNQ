@@ -278,11 +278,11 @@ public class UserServiceImpl implements UserService {
                         updateUserDetails(currentUser, name, contactNumber);
                         return ResponseEntity.ok("Chi tiết người dùng được cập nhật thành công.");
                     } else {
-                        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found.");
+                        return ProjectUtils.getResponseEntity("Không tìm thấy dữ liệu trong cơ sở dữ liệu.", HttpStatus.NOT_FOUND);
                     }
                 }
             }
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized access.");
+            return ProjectUtils.getResponseEntity(CafeConstants.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
         } catch (Exception ex) {
             ex.printStackTrace();
             return ProjectUtils.getResponseEntity(CafeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -318,13 +318,13 @@ public class UserServiceImpl implements UserService {
                         currentUser.setImagePath(imagePath.toString());
                         currentUser.setFileName(originalFilename);
                         userDao.save(currentUser);
-                        return ResponseEntity.ok("User updated successfully.");
+                        return ProjectUtils.getResponseEntity("Đã cập nhật thành công người dùng.", HttpStatus.OK);
                     } else {
-                        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found.");
+                        return ProjectUtils.getResponseEntity("Không tìm thấy dữ liệu trong cơ sở dữ liệu.", HttpStatus.NOT_FOUND);
                     }
                 }
             }
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized access.");
+            return ProjectUtils.getResponseEntity(CafeConstants.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
         } catch (Exception ex) {
             ex.printStackTrace();
             return ProjectUtils.getResponseEntity(CafeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
