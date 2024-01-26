@@ -19,6 +19,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -121,7 +123,6 @@ public class UserServiceImpl implements UserService {
         return new ResponseEntity<>("{\"message\":\"" + "Sai mật khẩu hoặc tài khoản." + "\"}",
                 HttpStatus.BAD_REQUEST);
     }
-
 
 
     @Override
@@ -251,5 +252,45 @@ public class UserServiceImpl implements UserService {
         }
         return ProjectUtils.getResponseEntity(CafeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    @Override
+    public ResponseEntity<String> updateUserDetails(Integer id, Map<String, String> requestMap) {
+        try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            if (authentication != null) {
+                Object principal = authentication.getPrincipal();
+                if (principal instanceof UserDetails) {
+                    UserDetails userDetails = (UserDetails) principal;
+                    String username = userDetails.getUsername();
+
+                    User currentUser = userDao.findByUserName(username);
+                    if (currentUser != null) {
+                        String name = requestMap.get("name");
+                        String contactNumber = requestMap.get("contactNumber");
+                        updateUserDetails(currentUser, name, contactNumber);
+                        return ResponseEntity.ok("User details updated successfully.");
+                    } else {
+                        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found.");
+                    }
+                }
+            }
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized access.");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return ProjectUtils.getResponseEntity(CafeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    private void updateUserDetails(User user, String name, String contactNumber) {
+        if (name != null && !name.isEmpty()) {
+            user.setName(name);
+        }
+        if (contactNumber != null && !contactNumber.isEmpty()) {
+            user.setContactNumber(contactNumber);
+        }
+
+        userDao.save(user);
+    }
+
 
 }

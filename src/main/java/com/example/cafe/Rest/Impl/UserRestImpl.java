@@ -115,6 +115,16 @@ public class UserRestImpl implements UserRest {
         }
     }
 
+    @Override
+    public ResponseEntity<String> updateUserDetails(Integer id, Map<String, String> requestMap) {
+        try {
+            return userService.updateUserDetails(id, requestMap);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return ProjectUtils.getResponseEntity(CafeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
 //    @Override
 //    public ResponseEntity<String> forgotPassword(Map<String, String> requestMap) {
 //        try {

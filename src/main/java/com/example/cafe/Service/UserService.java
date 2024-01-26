@@ -26,4 +26,6 @@ public interface UserService {
 
     ResponseEntity<String> updateDecentralization(Map<String, String> requestMap);
 
+    ResponseEntity<String> updateUserDetails(Integer id, Map<String, String> requestMap);
+
 }

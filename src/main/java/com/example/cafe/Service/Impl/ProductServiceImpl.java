@@ -198,7 +198,7 @@ public class ProductServiceImpl implements ProductService {
                 return ResponseEntity.badRequest().body("Không tìm thấy sản phẩm hoặc số lượng chưa khởi tạo");
             }
         } else {
-            return ResponseEntity.badRequest().body("ProductId hoặc Quantity không được null");
+            return ProjectUtils.getResponseEntity(CafeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

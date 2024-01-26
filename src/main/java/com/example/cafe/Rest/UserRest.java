@@ -20,7 +20,7 @@ public interface UserRest {
     ResponseEntity<List<UserDTO>> getAllUser();
 
     @PostMapping(path = "/update")
-    ResponseEntity<String> update(@RequestBody(required = true) Map<String,String> requestMap);
+    ResponseEntity<String> update(@RequestBody(required = true) Map<String, String> requestMap);
 
     @GetMapping(path = "/checkToken")
     ResponseEntity<String> checkToken();
@@ -35,9 +35,12 @@ public interface UserRest {
     ResponseEntity<String> deleteUser(@PathVariable Integer userId);
 
     @PostMapping(path = "/update_decentralization")
-    ResponseEntity<String> updateDecentralization(@RequestBody(required = true) Map<String,String> requestMap);
+    ResponseEntity<String> updateDecentralization(@RequestBody(required = true) Map<String, String> requestMap);
 
     @GetMapping(path = "/get_detail_login")
     ResponseEntity<com.example.cafe.Entity.User> getDetailLogin();
+
+    @PostMapping("/update_information/{id}")
+    ResponseEntity<String> updateUserDetails(@PathVariable("id") Integer id, @RequestBody(required = true) Map<String, String> requestMap);
 
 }
