@@ -2,6 +2,7 @@ package com.example.cafe.Rest.Impl;
 
 import com.example.cafe.Config.CustomerUserDetailsService;
 import com.example.cafe.Constants.CafeConstants;
+import com.example.cafe.Entity.User;
 import com.example.cafe.Rest.UserRest;
 import com.example.cafe.Service.UserService;
 import com.example.cafe.Utils.ProjectUtils;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -107,14 +109,15 @@ public class UserRestImpl implements UserRest {
     }
 
     @Override
-    public ResponseEntity<com.example.cafe.Entity.User> getDetailLogin() {
-        com.example.cafe.Entity.User currentUserDetail = customerUserDetailsService.getUserDetail();
+    public ResponseEntity<Map<String, Object>> getDetailLogin() throws IOException {
+        CustomerUserDetailsService.UserDetailResponse currentUserDetail = customerUserDetailsService.getUserDetail();
         if (currentUserDetail != null) {
-            return new ResponseEntity<>(currentUserDetail, HttpStatus.OK);
+            return new ResponseEntity<>(currentUserDetail.getCombinedInfo(), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
     }
+
 
     @Override
     public ResponseEntity<String> updateUserDetails(Integer id, Map<String, String> requestMap) {

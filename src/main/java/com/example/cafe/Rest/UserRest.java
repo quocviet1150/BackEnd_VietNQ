@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -39,7 +40,7 @@ public interface UserRest {
     ResponseEntity<String> updateDecentralization(@RequestBody(required = true) Map<String, String> requestMap);
 
     @GetMapping(path = "/get_detail_login")
-    ResponseEntity<com.example.cafe.Entity.User> getDetailLogin();
+    ResponseEntity<Map<String, Object>> getDetailLogin() throws IOException;
 
     @PostMapping("/update_information/{id}")
     ResponseEntity<String> updateUserDetails(@PathVariable("id") Integer id, @RequestBody(required = true) Map<String, String> requestMap);
