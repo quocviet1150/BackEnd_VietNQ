@@ -48,4 +48,7 @@ public interface UserRest {
     @PostMapping("/update_image/{id}")
     ResponseEntity<String> updateUser(@PathVariable("id") Integer id,  @RequestParam MultipartFile file);
 
+//    @GetMapping(path = "/get_detail_login")
+//    ResponseEntity<com.example.cafe.Entity.User> getDetailLogin();
+
 }

@@ -113,10 +113,10 @@ public class UserServiceImpl implements UserService {
             );
             if (auth.isAuthenticated()) {
                 loginCounter.incrementLoginCount();
-                if (customerUserDetailsService.getUserDetail().getUserDetail().getStatus().equalsIgnoreCase("true")) {
+                if (customerUserDetailsService.getUserDetailVr1().getStatus().equalsIgnoreCase("true")) {
                     return new ResponseEntity<>("{\"token\":\"" +
-                            jwtUtil.generateToken(customerUserDetailsService.getUserDetail().getUserDetail().getUserName(),
-                                    customerUserDetailsService.getUserDetail().getUserDetail().getRole()) + "\"}",
+                            jwtUtil.generateToken(customerUserDetailsService.getUserDetailVr1().getUserName(),
+                                    customerUserDetailsService.getUserDetailVr1().getRole()) + "\"}",
                             HttpStatus.OK);
                 } else {
                     return new ResponseEntity<>("{\"message\":\"" + "Tài khoản quý khách đã ngưng hoạt động" + "\"}", HttpStatus.BAD_REQUEST);

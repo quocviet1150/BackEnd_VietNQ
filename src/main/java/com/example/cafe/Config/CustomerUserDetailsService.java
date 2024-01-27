@@ -45,6 +45,17 @@ public class CustomerUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException(("User not found."));
     }
 
+    public com.example.cafe.Entity.User getUserDetailVr1() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null) {
+            Object principal = authentication.getPrincipal();
+            if (principal instanceof com.example.cafe.Entity.User) {
+                return (com.example.cafe.Entity.User) principal;
+            }
+        }
+        return userDetail;
+    }
+
     public UserDetailResponse getUserDetail() throws IOException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
@@ -57,19 +68,30 @@ public class CustomerUserDetailsService implements UserDetailsService {
                 com.example.cafe.Entity.User userFromDB = userDao.findByUserNameId(username);
                 if (userFromDB != null) {
                     String fileName = userFromDB.getFileName();
-                    byte[] imageBytes = Files.readAllBytes(Path.of(uploadPath + File.separator + userFromDB.getId(), fileName));
-                    String imageBase64 = Base64.getEncoder().encodeToString(imageBytes);
+                    String filePath = uploadPath + File.separator + userFromDB.getId() + File.separator + fileName;
 
-                    UserDetailResponse response = new UserDetailResponse();
-                    response.setUserDetail(userFromDB);
-                    response.setImageBase64(imageBase64);
+                    // Kiểm tra đường dẫn trước khi đọc file
+                    File file = new File(filePath);
+                    if (file.exists()) {
+                        byte[] imageBytes = Files.readAllBytes(file.toPath());
+                        String imageBase64 = Base64.getEncoder().encodeToString(imageBytes);
 
-                    return response;
+                        UserDetailResponse response = new UserDetailResponse();
+                        response.setUserDetail(userFromDB);
+                        response.setImageBase64(imageBase64);
+
+                        return response;
+                    } else {
+                        UserDetailResponse response = new UserDetailResponse();
+                        response.setUserDetail(userFromDB);
+                        return response;
+                    }
                 }
             }
         }
         return null;
     }
+
 
     public class UserDetailResponse {
         private com.example.cafe.Entity.User userDetail;
