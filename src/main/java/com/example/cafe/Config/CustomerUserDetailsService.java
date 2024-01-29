@@ -66,11 +66,10 @@ public class CustomerUserDetailsService implements UserDetailsService {
                 String username = userDetail.getUsername();
 
                 com.example.cafe.Entity.User userFromDB = userDao.findByUserNameId(username);
+
                 if (userFromDB != null) {
                     String fileName = userFromDB.getFileName();
                     String filePath = uploadPath + File.separator + userFromDB.getId() + File.separator + fileName;
-
-                    // Kiểm tra đường dẫn trước khi đọc file
                     File file = new File(filePath);
                     if (file.exists()) {
                         byte[] imageBytes = Files.readAllBytes(file.toPath());
@@ -113,7 +112,6 @@ public class CustomerUserDetailsService implements UserDetailsService {
             this.imageBase64 = imageBase64;
         }
 
-        // Phương thức để lấy cả userDetail và imageBase64
         public Map<String, Object> getCombinedInfo() {
             Map<String, Object> combinedInfo = new HashMap<>();
             combinedInfo.put("userDetail", userDetail);
