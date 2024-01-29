@@ -68,7 +68,6 @@ public class UserServiceImpl implements UserService {
 
                 User user = userDao.findByUserNameId(requestMap.get("userName"));
                 if (Objects.isNull(user)) {
-                    user.setCreatedDate(new Date());
                     userDao.save(getUserFromMap(requestMap));
                     return ProjectUtils.getResponseEntity("Đăng ký tài khoản thành công.", HttpStatus.OK);
                 } else {
@@ -97,6 +96,7 @@ public class UserServiceImpl implements UserService {
         User user = new User();
         user.setName(requestMap.get("name"));
         user.setContactNumber(requestMap.get("contactNumber"));
+        user.setCreatedDate(new Date());
         user.setUserName(requestMap.get("userName"));
         user.setPassword(requestMap.get("password"));
         user.setStatus("true");
