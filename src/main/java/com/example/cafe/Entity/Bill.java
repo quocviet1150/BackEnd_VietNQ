@@ -1,6 +1,7 @@
 package com.example.cafe.Entity;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import lombok.Data;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.NamedQuery;
@@ -16,13 +17,13 @@ import java.util.Date;
 
 @NamedQuery(name = "Bill.sumBill", query = "SELECT SUM(b.total) FROM Bill b")
 
-@NamedQuery(name = "Bill.getOne",query = "SELECT COUNT(b.id) AS totalOrders\n" +
+@NamedQuery(name = "Bill.getOne", query = "SELECT COUNT(b.id) AS totalOrders\n" +
         "FROM Bill b\n" +
         "WHERE DATE(b.createdDate) = CURRENT_DATE ")
 
 @NamedQuery(name = "Bill.sumBillByDate", query = "SELECT SUM(b.total) FROM Bill b WHERE DATE(b.createdDate) = CURRENT_DATE")
 
-
+@Data
 @Entity
 @DynamicUpdate
 @DynamicInsert
@@ -75,87 +76,6 @@ public class Bill implements Serializable {
         this.total = total;
         this.productDetails = productDetails;
         this.createdBy = createdBy;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    public String getUuid() {
-        return uuid;
-    }
-
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
-    }
-
-    public String getContactNumber() {
-        return contactNumber;
-    }
-
-    public void setContactNumber(String contactNumber) {
-        this.contactNumber = contactNumber;
-    }
-
-    public String getPaymentMethod() {
-        return paymentMethod;
-    }
-
-    public void setPaymentMethod(String paymentMethod) {
-        this.paymentMethod = paymentMethod;
-    }
-
-    public Integer getTotal() {
-        return total;
-    }
-
-    public void setTotal(Integer total) {
-        this.total = total;
-    }
-
-    public String getProductDetails() {
-        return productDetails;
-    }
-
-    public void setProductDetails(String productDetails) {
-        this.productDetails = productDetails;
-    }
-    public Date getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(Date createdDate) {
-        this.createdDate = createdDate;
     }
 
 }

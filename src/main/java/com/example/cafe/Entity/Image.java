@@ -1,6 +1,7 @@
 package com.example.cafe.Entity;
 
 
+import lombok.Data;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.NamedQuery;
@@ -18,8 +19,7 @@ import java.io.Serializable;
 
 @NamedQuery(name = "Image.findByFileName", query = "SELECT i FROM Image i WHERE i.fileName = :fileName")
 
-
-
+@Data
 @Entity
 @DynamicUpdate
 @DynamicInsert
@@ -56,54 +56,6 @@ public class Image implements Serializable {
         this.imagePath = imagePath;
         this.fileName = fileName;
         this.description = description;
-        this.status = status;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getImagePath() {
-        return imagePath;
-    }
-
-    public void setImagePath(String imagePath) {
-        this.imagePath = imagePath;
-    }
-
-    public String getFileName() {
-        return fileName;
-    }
-
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
         this.status = status;
     }
 

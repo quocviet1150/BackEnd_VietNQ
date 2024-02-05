@@ -1,10 +1,13 @@
 package com.example.cafe.DTO;
 
+import lombok.Data;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Data
 public class ProductDTO {
 
     Integer id;
@@ -20,11 +23,6 @@ public class ProductDTO {
     Integer quantity_product;
 
     private List<List<String>> temporaryChartData;
-
-
-    public ProductDTO() {
-
-    }
 
     public ProductDTO(Integer id, String name, String description, Integer price, String status, Integer categoryId, String categoryName, Date createdDate, Date updateDate,Integer quantity_product) {
         this.id = id;
@@ -58,91 +56,8 @@ public class ProductDTO {
         this.price = price;
     }
 
-    public Integer getId() {
-        return id;
+    public ProductDTO() {
+
     }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Integer getPrice() {
-        return price;
-    }
-
-    public void setPrice(Integer price) {
-        this.price = price;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public Integer getCategoryId() {
-        return categoryId;
-    }
-
-    public void setCategoryId(Integer categoryId) {
-        this.categoryId = categoryId;
-    }
-
-    public String getCategoryName() {
-        return categoryName;
-    }
-
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
-    }
-
-    public Date getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(Date createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public Integer getQuantity_product() {
-        return quantity_product;
-    }
-
-    public void setQuantity_product(Integer quantity_product) {
-        this.quantity_product = quantity_product;
-    }
-
-    public List<List<String>> getTemporaryChartData() {
-        return temporaryChartData;
-    }
-
-    public void setTemporaryChartData(List<List<String>> temporaryChartData) {
-        this.temporaryChartData = temporaryChartData;
-    }
-
-    public Date getUpdateDate() {
-        return updateDate;
-    }
-
-    public void setUpdateDate(Date updateDate) {
-        this.updateDate = updateDate;
-    }
 }

@@ -1,5 +1,6 @@
 package com.example.cafe.Entity;
 
+import lombok.Data;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.NamedQuery;
@@ -23,10 +24,11 @@ import java.util.Date;
 @NamedQuery(name = "Product.getByIdProduct", query = "select new com.example.cafe.DTO.ProductDTO(p.id,p.name," +
         "p.description,p.price) from Product p WHERE p.id=:id order by p.id desc")
 
-@NamedQuery(name = "Product.getDateNowProduct",query = "SELECT COUNT(p.id) AS totalOrders\n" +
+@NamedQuery(name = "Product.getDateNowProduct", query = "SELECT COUNT(p.id) AS totalOrders\n" +
         "FROM Product p\n" +
         "WHERE DATE(p.createdDate) = CURRENT_DATE ")
 
+@Data
 @Entity
 @DynamicUpdate
 @DynamicInsert
@@ -65,79 +67,4 @@ public class Product implements Serializable {
     @Column(name = "quantity_product")
     private Integer quantity_product;
 
-    public Product() {
-
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Category getCategory() {
-        return category;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public Integer getPrice() {
-        return price;
-    }
-
-    public void setPrice(Integer price) {
-        this.price = price;
-    }
-
-    public Date getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(Date createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public Integer getQuantity_product() {
-        return quantity_product;
-    }
-
-    public void setQuantity_product(Integer quantity_product) {
-        this.quantity_product = quantity_product;
-    }
-
-    public Date getUpdateDate() {
-        return updateDate;
-    }
-
-    public void setUpdateDate(Date updateDate) {
-        this.updateDate = updateDate;
-    }
 }

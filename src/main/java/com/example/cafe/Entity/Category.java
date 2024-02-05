@@ -1,5 +1,6 @@
 package com.example.cafe.Entity;
 
+import lombok.Data;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.NamedQuery;
@@ -18,9 +19,9 @@ import java.io.Serializable;
                 "order by c.id desc"
 )
 
-
 @NamedQuery(name = "Category.updateStatus", query = "update Category c set c.status=:status where c.id=:id")
 
+@Data
 @Entity
 @DynamicUpdate
 @DynamicInsert
@@ -44,27 +45,4 @@ public class Category implements Serializable {
 
     }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
 }
