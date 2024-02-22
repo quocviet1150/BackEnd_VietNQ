@@ -27,7 +27,7 @@ public class CategoryRestImpl implements CategoryRest {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        return new ResponseEntity<List<Category>>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @Override
@@ -37,7 +37,7 @@ public class CategoryRestImpl implements CategoryRest {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        return new ResponseEntity<List<Category>>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @Override

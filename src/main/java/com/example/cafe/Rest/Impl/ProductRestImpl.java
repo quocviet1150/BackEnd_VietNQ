@@ -1,10 +1,10 @@
 package com.example.cafe.Rest.Impl;
 
 import com.example.cafe.Constants.CafeConstants;
+import com.example.cafe.DTO.ProductDTO;
 import com.example.cafe.Rest.ProductRest;
 import com.example.cafe.Service.ProductService;
 import com.example.cafe.Utils.ProjectUtils;
-import com.example.cafe.DTO.ProductDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,7 +37,7 @@ public class ProductRestImpl implements ProductRest {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        return new ResponseEntity<List<ProductDTO>>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @Override
@@ -77,7 +77,7 @@ public class ProductRestImpl implements ProductRest {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        return new ResponseEntity<List<ProductDTO>>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @Override
@@ -87,7 +87,7 @@ public class ProductRestImpl implements ProductRest {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        return new ResponseEntity<ProductDTO>(new ProductDTO(), HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(new ProductDTO(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @Override
@@ -117,6 +117,6 @@ public class ProductRestImpl implements ProductRest {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        return new ResponseEntity<List<List<String>>>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

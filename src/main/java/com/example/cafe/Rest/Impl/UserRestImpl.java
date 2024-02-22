@@ -2,11 +2,10 @@ package com.example.cafe.Rest.Impl;
 
 import com.example.cafe.Config.CustomerUserDetailsService;
 import com.example.cafe.Constants.CafeConstants;
-import com.example.cafe.Entity.User;
+import com.example.cafe.DTO.UserDTO;
 import com.example.cafe.Rest.UserRest;
 import com.example.cafe.Service.UserService;
 import com.example.cafe.Utils.ProjectUtils;
-import com.example.cafe.DTO.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -55,7 +54,7 @@ public class UserRestImpl implements UserRest {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        return new ResponseEntity<List<UserDTO>>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @Override
